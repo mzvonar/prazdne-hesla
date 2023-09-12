@@ -14,7 +14,7 @@ import { Meta } from 'react-head';
 const MAX_WIDTH = 1024;
 const MAX_HEIGHT = 768;
 
-const isDev = import.meta.env.APP_ENV !== 'production';
+const START_WITH_PLACEHOLDER = import.meta.env.VITE_START_WITH_PLACEHOLDER === 'true';
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 
 interface Positioning {
@@ -367,7 +367,7 @@ function App() {
   };
 
   useEffect(() => {
-    if(!devImageRef.current && isDev) {
+    if(!devImageRef.current && START_WITH_PLACEHOLDER) {
       devImageRef.current = true;
       const image = new Image();
 

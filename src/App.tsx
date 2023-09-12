@@ -8,10 +8,9 @@ import userPlaceholderSrc from './assets/user_placeholder.jpg';
 import billboard1Src from './assets/billboard1.jpg';
 import billboard2Src from './assets/billboard2.jpg';
 import billboard3Src from './assets/billboard3.jpg';
+import { imageNameToUrlParameter } from './utils.ts';
 import RefreshIcon from './RefreshIcon.tsx';
 import './App.css';
-import { imageNameToUrlParameter } from './utils.ts';
-import { Meta } from 'react-head';
 
 const MAX_WIDTH = 1024;
 const MAX_HEIGHT = 768;
@@ -492,8 +491,6 @@ function App() {
 
   return (
     <div className="App">
-      <Meta property="og:image" content="/cover.jpg" />
-
       <ToastContainer />
 
       <h1>

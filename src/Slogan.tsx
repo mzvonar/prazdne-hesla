@@ -16,7 +16,7 @@ function Slogan() {
 
   const imageName = urlParameterToImageName(sloganId);
   const imageUrl = `${BASE_URL}${imageName}`;
-console.log('imageUrl: ', imageUrl);
+
   return (
     <div id="root">
       <Meta property="og:image" content={imageUrl} />

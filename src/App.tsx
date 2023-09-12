@@ -233,6 +233,7 @@ async function uploadImage(token: string, imageBase64: string) {
 function App() {
   const [userImage, setUserImage] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const uploadButtonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const devImageRef = useRef(false);
 
@@ -306,6 +307,7 @@ function App() {
   };
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     const file = event.target.files?.[0];
 
     if(!file) {
@@ -314,6 +316,10 @@ function App() {
 
     const imageUrl = URL.createObjectURL(file);
     setUserImage(imageUrl);
+
+    if(uploadButtonRef.current) {
+      uploadButtonRef.current.blur();
+    }
   };
 
   const handleFacebookShare = async (e: MouseEvent) => {
@@ -414,17 +420,20 @@ function App() {
 
       <ToastContainer />
 
-      <h1>Vygenerujte si prázdne heslá</h1>
+      <h1>
+        {!userImage ? 'Vygenerujte si prázdne heslá' : 'Prázdne heslá'}
+      </h1>
 
-      <div className="buttons">
+      <div className={`buttons${!userImage ? ' photo-empty' : ''}`}>
+        {!userImage &&
+          <div className="start-text">
+            Začnite tým, že nahráte svoju fotku:
+          </div>
+        }
+
         <div className="upload-btn-wrapper">
-          {!userImage &&
-            <p>
-              Začnite tým, že nahráte svoju fotku:
-            </p>
-          }
-          <button onClick={handleUploadClick}>
-            {userImage ? 'Nahraj inú fotku' : 'Nahraj si svoju fotku'}
+          <button ref={uploadButtonRef} className={!userImage ? 'primary' : ''} onClick={handleUploadClick}>
+            {userImage ? 'Nahraj inú fotku' : 'Nahraj svoju fotku'}
           </button>
 
           {/*<span>Žiadna fotka nevybraná</span>*/}

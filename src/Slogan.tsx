@@ -1,11 +1,17 @@
 import Helmet from 'react-helmet';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { urlParameterToImageName } from './utils.ts';
 
 const BASE_URL= import.meta.env.VITE_IMAGE_CDN_URL;
 
 function Slogan() {
+  const navigate = useNavigate();
   const { sloganId } = useParams();
+
+  if(!sloganId) {
+    navigate("/");
+    return null;
+  }
 
   const imageName = urlParameterToImageName(sloganId);
   const imageUrl = `${BASE_URL}${imageName}`;

@@ -14,7 +14,7 @@ import { imageNameToUrlParameter } from './utils.ts';
 const MAX_WIDTH = 800;
 const MAX_HEIGHT = 600;
 
-const isDev = import.meta.env.NODE_ENV !== 'production';
+const isDev = import.meta.env.APP_ENV !== 'production';
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 
 const billboard1 = {

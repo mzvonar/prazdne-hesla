@@ -1,3 +1,4 @@
+// @ts-nocheck TODO: Fix types
 import {
   WordDefinition,
   Noun,
@@ -173,7 +174,7 @@ function formatNoun(noun: Noun, adjectives: Adjective[], { caseKey, countKey }: 
 
 function formatVerb(verb: Verb, { personKey, countKey }: FormattingConfig, isFirst = true): FormattedWord {
   const tenseKey: Tense = getRandomItem(["present", "future"]);
-  const _personKey: Person = personKey || getRandomItem(["firstPerson", "secondPerson", "thirdPerson"]);;
+  const _personKey: Person = personKey || getRandomItem(["firstPerson", "secondPerson", "thirdPerson"]);
   const _countKey: Count = countKey || getRandomItem(["singular", "plural"]);
 
   console.log('==getVerb==');
@@ -239,7 +240,6 @@ function formatWord(word: WordDefinition, adjectives, formattingConfig: Formatti
 }
 
 function getNoun(nouns: Noun[], adjectives: Adjective[], formattingConfig: FormattingConfig): FormattedWord {
-  const words = [];
   const noun = getRandomNoun(nouns);
 
   return formatNoun(noun, adjectives, formattingConfig);
@@ -275,21 +275,6 @@ function makeGetRandomWord(nouns: Noun[], verbs: Verb[], adjectives: Adjective[]
         const value = getRandomItem(specials);
         return { type: 'special', value };
       }
-      default:
-        throw new Error(`Can't get random word of type ${type}`);
-    }
-  }
-}
-
-function makeGetRandomFormattedWord(nouns: Noun[], verbs: Verb[], adjectives: Adjective[]): FormattedWord {
-  return (type: WordType, formattingConfig: FormattingConfig) => {
-    switch(type) {
-      case 'noun':
-        return getNoun(nouns, adjectives, formattingConfig);
-      case 'verb':
-        return getVerb(verbs, formattingConfig);
-      case 'adjective':
-        return getAdjective(adjectives, formattingConfig);
       default:
         throw new Error(`Can't get random word of type ${type}`);
     }
@@ -377,7 +362,7 @@ function generateSentenceFromTemplate(getRandomWord: () => WordDefinition, templ
         formattingConfig.personKey = personKey;
       }
 
-      const isFirst = !Boolean(previousWordDef);
+      const isFirst = !previousWordDef;
       const word = formatWord(wordDef, adjectives, formattingConfig, isFirst);
 
       words.push({
@@ -412,7 +397,7 @@ function generateSentence(
       else {
         //console.error(`Error on step ${tries}: ${error.message}`);
         throw error;
-        return generateSentence(nouns, verbs, adjectives, maxTries - 1);
+        // return generateSentence(nouns, verbs, adjectives, maxTries - 1);
       }
     }
 }

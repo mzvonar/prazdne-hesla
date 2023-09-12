@@ -1,3 +1,4 @@
+// @ts-nocheck TODO: Fix types
 import React, { useState, useRef, useEffect } from 'react';
 import generateSlogan from './generateSlogan';
 import userPlaceholderSrc from './assets/user_placeholder.jpg';
@@ -110,7 +111,7 @@ function renderTextOnCanvasWrapped(canvas, ctx, text, {
     const lines = [];
     let line = '';
 
-    for (let word of words) {
+    for (const word of words) {
       const testLine = line + (line ? ' ' : '') + word;
       const testWidth = ctx.measureText(testLine).width;
 
@@ -266,22 +267,22 @@ function App() {
     setUserImage(imageUrl);
   };
 
-  const handleFacebookShare = () => {
-    if (userImage) {
-      const canvas = canvasRef.current;
-
-      // Convert the canvas to a data URL (base64)
-      const imageDataURL = canvas.toDataURL('image/png');
-
-      // Use the Facebook SDK to share the image
-      FB.ui({
-        method: 'share',
-        href: 'https://your-website-url.com', // Replace with your website URL
-        picture: imageDataURL,
-        caption: 'Check out my political billboard!',
-      }, function(response){});
-    }
-  };
+  // const handleFacebookShare = () => {
+  //   if (userImage) {
+  //     const canvas = canvasRef.current;
+  //
+  //     // Convert the canvas to a data URL (base64)
+  //     const imageDataURL = canvas.toDataURL('image/png');
+  //
+  //     // Use the Facebook SDK to share the image
+  //     FB.ui({
+  //       method: 'share',
+  //       href: 'https://your-website-url.com', // Replace with your website URL
+  //       picture: imageDataURL,
+  //       caption: 'Check out my political billboard!',
+  //     }, function(response){});
+  //   }
+  // };
 
   useEffect(() => {
     if(!devImageRef.current && isDev) {
@@ -353,7 +354,7 @@ function App() {
 
       {userImage &&
         <>
-          <button onClick={handleFacebookShare}>Share on Facebook</button>
+          {/*<button onClick={handleFacebookShare}>Share on Facebook</button>*/}
 
           <p>
             Vidíte aké ľahké je náhodne vygenerovať prázdny politický slogan? Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />

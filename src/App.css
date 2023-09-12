@@ -86,3 +86,13 @@
 .refresh-icon {
   margin-right: 0.5em;
 }
+
+.share-buttons {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.share-buttons button {
+  margin-left: 10px;
+  margin-right: 10px;
+}

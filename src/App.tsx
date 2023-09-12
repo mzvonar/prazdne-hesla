@@ -1,15 +1,21 @@
 // @ts-nocheck TODO: Fix types
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import generateSlogan from './generateSlogan';
 import userPlaceholderSrc from './assets/user_placeholder.jpg';
 import billboard1Src from './assets/billboard1.jpg';
 import RefreshIcon from './RefreshIcon.tsx';
 import './App.css';
+import { imageNameToUrlParameter } from './utils.ts';
 
 const MAX_WIDTH = 800;
 const MAX_HEIGHT = 600;
 
 const isDev = import.meta.env.NODE_ENV !== 'production';
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 
 const billboard1 = {
   image: billboard1Src,
@@ -175,6 +181,20 @@ function renderTextOnCanvasWrapped(canvas, ctx, text, {
   });
 }
 
+function getImageAsBase64(canvas: HTMLCanvasElement) {
+  // Convert the canvas to a data URL (base64)
+  return canvas.toDataURL('image/jpeg',  1.0);
+}
+
+async function uploadImage(token: string, imageBase64: string) {
+  const response = await axios.post('/.netlify/functions/upload-image', {
+    recaptchaToken: token,
+    imageBase64,
+  });
+
+  return response.data;
+}
+
 function App() {
   const [userImage, setUserImage] = useState(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -194,6 +214,8 @@ function App() {
     if (userImage && canvas && context) {
       const billboard = billboard1;
       const slogan = generateSlogan();
+
+      canvas.dataset.slogan = slogan;
       
       // Load the billboard template image
       const templateImage = new Image();
@@ -236,20 +258,6 @@ function App() {
           // Add the slogan text (customize font, color, etc.)
           context.font = `${billboard.slogan.fontSize}px Arial`;
           context.fillStyle = 'white';
-//           const { x: sloganX, y: sloganY, width: sloganWidth, height: sloganHeight } = getSloganDimensions(billboard.slogan, backgroundWidth, backgroundHeight, billboard.slogan.horizontalPadding, billboard.slogan.verticalPadding, billboard.slogan.fontSize);
-// console.log('sloganX: ', sloganX);
-// console.log('sloganY: ', sloganY);
-// console.log('sloganWidth: ', sloganWidth);
-// console.log('sloganHeight: ', sloganHeight);
-          // context.fillText(slogan, sloganX, sloganY, maxWidth);
-          // renderTextOnCanvas(
-          //   context,
-          //   slogan,
-          //   { x: sloganX, y: sloganY, width: sloganWidth, height: sloganHeight },
-          //   billboard.slogan.fontSize,
-          //   billboard.slogan.horizontalAlign,
-          //   billboard.slogan.verticalAlign,
-          // );
 
           // renderTextOnCanvas2(canvas,context, slogan, billboard.slogan, backgroundWidth, backgroundHeight)
           renderTextOnCanvasWrapped(canvas,context, slogan, billboard.slogan, backgroundWidth, backgroundHeight)
@@ -267,22 +275,51 @@ function App() {
     setUserImage(imageUrl);
   };
 
-  // const handleFacebookShare = () => {
-  //   if (userImage) {
-  //     const canvas = canvasRef.current;
-  //
-  //     // Convert the canvas to a data URL (base64)
-  //     const imageDataURL = canvas.toDataURL('image/png');
-  //
-  //     // Use the Facebook SDK to share the image
-  //     FB.ui({
-  //       method: 'share',
-  //       href: 'https://your-website-url.com', // Replace with your website URL
-  //       picture: imageDataURL,
-  //       caption: 'Check out my political billboard!',
-  //     }, function(response){});
-  //   }
-  // };
+  const handleFacebookShare = async (e) => {
+    e.preventDefault();
+
+    if (userImage) {
+      await grecaptcha.ready(async () => {
+        try {
+          const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+          const imageDataURL = getImageAsBase64(canvasRef.current);
+
+          const  { imageName } = await uploadImage(token, imageDataURL);
+
+          const imageUrlParam = imageNameToUrlParameter(imageName);
+          const urlToShare = new URL(`/slogan/${imageUrlParam}`, window.location.origin);
+          const encodedUrlToShare = encodeURIComponent(urlToShare);
+
+          // Create the Facebook share URL
+          const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
+
+          // Open a new window with the Facebook share dialog
+          window.open(facebookShareUrl, 'Share on Facebook', 'width=600,height=400');
+        }
+        catch(e) {
+          console.error(e);
+          toast.error("Ľutujeme, ale nastala chyba");
+        }
+      });
+    }
+  };
+
+  const handleDownloadImage = (e) => {
+    e.preventDefault();
+
+    const canvas = canvasRef.current;
+
+    const imageDataURL = getImageAsBase64(canvas);
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = imageDataURL;
+    const slogan = canvas.dataset.slogan || 'slogan';
+    const fileName = slogan.split(' ').join('_');
+
+    downloadLink.download = `${fileName}.jpg`;
+
+    downloadLink.click();
+  };
 
   useEffect(() => {
     if(!devImageRef.current && isDev) {
@@ -310,7 +347,7 @@ function App() {
         }, 'image/jpeg'); // Specify the desired image format (e.g., 'image/jpeg' or 'image/png')
       };
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if(userImage) {
@@ -320,11 +357,20 @@ function App() {
 
   return (
     <div className="App">
+      <ToastContainer />
+
       <h1>Vygenerujte si prázdne heslá</h1>
 
       <div className="buttons">
         <div className="upload-btn-wrapper">
-          <button onClick={handleUploadClick}>{userImage ? 'Nahraj inú fotku' : 'Nahraj si svoju fotku'}</button>
+          {!userImage &&
+            <p>
+              Začnite tým, že nahráte svoju fotku:
+            </p>
+          }
+          <button onClick={handleUploadClick}>
+            {userImage ? 'Nahraj inú fotku' : 'Nahraj si svoju fotku'}
+          </button>
 
           {/*<span>Žiadna fotka nevybraná</span>*/}
           <input
@@ -337,9 +383,9 @@ function App() {
         </div>
         {userImage &&
           <button className="primary" onClick={handleGenerateBillboard}>
-          <span className="icon refresh-icon">
-            <RefreshIcon />
-          </span>
+            <span className="icon refresh-icon">
+              <RefreshIcon />
+            </span>
             Vygeneruj nový billboard
           </button>
         }
@@ -354,7 +400,14 @@ function App() {
 
       {userImage &&
         <>
-          {/*<button onClick={handleFacebookShare}>Share on Facebook</button>*/}
+          <div className="share-buttons">
+            <button id="share-fb-button" onClick={handleFacebookShare}>
+              Zdieľať na Facebooku
+            </button>
+            <button id="save-image-button" onClick={handleDownloadImage}>
+              Uložiť obrázok
+            </button>
+          </div>
 
           <p>
             Vidíte aké ľahké je náhodne vygenerovať prázdny politický slogan? Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />
@@ -362,9 +415,9 @@ function App() {
           </p>
 
           <p>
-            <a href="#">
+            <Link to="/zasady-ochrany-osobnych-udajov">
               Zásady ochrany osobných údajov
-            </a>
+            </Link>
           </p>
         </>
       }

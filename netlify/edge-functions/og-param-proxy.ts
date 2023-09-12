@@ -9,8 +9,6 @@ export default async (request: any, context: Context) => {
 
   const url = new URL(request.url);
   
-  console.log('url: ', url);
-
   const response = await context.next()
   const page = await response.text();
 

@@ -83,15 +83,21 @@ export type TemplateWordType =
   | "subject"
   | "object"
   | "verb"
+  | "custom"
 
 export interface TemplateDef {
   types: TemplateWordType[];
   cases?: Case[];
+  preferVerbCaseOverride?: boolean;
   persons?: Person[][];
+  counts?: (Count | null)[];
+  customWords?: (string | WordDefinition)[][];
 }
 
 export interface Template {
   types: TemplateWordType[];
   cases: Case[];
   persons: Person[][];
+  counts: (Count | null)[];
+  customWords: (string | WordDefinition)[][];
 }

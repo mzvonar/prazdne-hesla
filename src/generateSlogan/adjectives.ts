@@ -1275,6 +1275,255 @@ const lacnyAdjective: Adjective = {
   },
 };
 
+const silnyAdjective: Adjective = {
+  word: 'silný',
+  type: 'adjective',
+  masculine: {
+    nominative: {
+      singular: 'silný',
+      plural: 'silní',
+    },
+    genitive: {
+      singular: 'silného',
+      plural: 'silných',
+    },
+    dative: {
+      singular: 'silnému',
+      plural: 'silným',
+    },
+    accusative: {
+      singular: 'silného',
+      plural: 'silných',
+    },
+    locative: {
+      singular: 'silnom',
+      plural: 'silných',
+    },
+    instrumental: {
+      singular: 'silným',
+      plural: 'silnými',
+    },
+  },
+  feminine: {
+    nominative: {
+      singular: 'silná',
+      plural: 'silné',
+    },
+    genitive: {
+      singular: 'silnej',
+      plural: 'silných',
+    },
+    dative: {
+      singular: 'silnej',
+      plural: 'silným',
+    },
+    accusative: {
+      singular: 'silnú',
+      plural: 'silné',
+    },
+    locative: {
+      singular: 'silnej',
+      plural: 'silných',
+    },
+    instrumental: {
+      singular: 'silnou',
+      plural: 'silnými',
+    },
+  },
+  neuter: {
+    nominative: {
+      singular: 'silné',
+      plural: 'silné',
+    },
+    genitive: {
+      singular: 'silného',
+      plural: 'silných',
+    },
+    dative: {
+      singular: 'silnému',
+      plural: 'silným',
+    },
+    accusative: {
+      singular: 'silné',
+      plural: 'silné',
+    },
+    locative: {
+      singular: 'silnom',
+      plural: 'silných',
+    },
+    instrumental: {
+      singular: 'silným',
+      plural: 'silnými',
+    },
+  },
+};
+
+const trinastyAdjective: Adjective = {
+  word: 'trinásty',
+  type: 'adjective',
+  masculine: {
+    nominative: {
+      singular: 'trinásty',
+      plural: 'trinásti',
+    },
+    genitive: {
+      singular: 'trinásteho',
+      plural: 'trinástich',
+    },
+    dative: {
+      singular: 'trinástemu',
+      plural: 'trinástim',
+    },
+    accusative: {
+      singular: 'trinásteho',
+      plural: 'trinástich',
+    },
+    locative: {
+      singular: 'trinástom',
+      plural: 'trinástich',
+    },
+    instrumental: {
+      singular: 'trinástym',
+      plural: 'trinástimi',
+    },
+  },
+  feminine: {
+    nominative: {
+      singular: 'trinásta',
+      plural: 'trináste',
+    },
+    genitive: {
+      singular: 'trinástej',
+      plural: 'trinástich',
+    },
+    dative: {
+      singular: 'trinástej',
+      plural: 'trinástim',
+    },
+    accusative: {
+      singular: 'trinástu',
+      plural: 'trináste',
+    },
+    locative: {
+      singular: 'trinástej',
+      plural: 'trinástich',
+    },
+    instrumental: {
+      singular: 'trinástou',
+      plural: 'trinástimi',
+    },
+  },
+  neuter: {
+    nominative: {
+      singular: 'trináste',
+      plural: 'trináste',
+    },
+    genitive: {
+      singular: 'trinásteho',
+      plural: 'trinástich',
+    },
+    dative: {
+      singular: 'trinástemu',
+      plural: 'trinástim',
+    },
+    accusative: {
+      singular: 'trináste',
+      plural: 'trináste',
+    },
+    locative: {
+      singular: 'trinástom',
+      plural: 'trinástich',
+    },
+    instrumental: {
+      singular: 'trinástym',
+      plural: 'trinástymi',
+    },
+  },
+};
+
+const zapredanyAdjective: Adjective = {
+  word: 'zapredaný',
+  type: 'adjective',
+  masculine: {
+    nominative: {
+      singular: 'zapredaný',
+      plural: 'zapredaní',
+    },
+    genitive: {
+      singular: 'zapredaného',
+      plural: 'zapredaných',
+    },
+    dative: {
+      singular: 'zapredanému',
+      plural: 'zapredaným',
+    },
+    accusative: {
+      singular: 'zapredaného',
+      plural: 'zapredaných',
+    },
+    locative: {
+      singular: 'zapredanom',
+      plural: 'zapredaných',
+    },
+    instrumental: {
+      singular: 'zapredaným',
+      plural: 'zapredanými',
+    },
+  },
+  feminine: {
+    nominative: {
+      singular: 'zapredaná',
+      plural: 'zapredané',
+    },
+    genitive: {
+      singular: 'zapredanej',
+      plural: 'zapredaných',
+    },
+    dative: {
+      singular: 'zapredanej',
+      plural: 'zapredaným',
+    },
+    accusative: {
+      singular: 'zapredanú',
+      plural: 'zapredané',
+    },
+    locative: {
+      singular: 'zapredanej',
+      plural: 'zapredaných',
+    },
+    instrumental: {
+      singular: 'zapredanou',
+      plural: 'zapredanými',
+    },
+  },
+  neuter: {
+    nominative: {
+      singular: 'zapredané',
+      plural: 'zapredané',
+    },
+    genitive: {
+      singular: 'zapredaného',
+      plural: 'zapredaných',
+    },
+    dative: {
+      singular: 'zapredanému',
+      plural: 'zapredaným',
+    },
+    accusative: {
+      singular: 'zapredané',
+      plural: 'zapredané',
+    },
+    locative: {
+      singular: 'zapredanom',
+      plural: 'zapredaných',
+    },
+    instrumental: {
+      singular: 'zapredaným',
+      plural: 'zapredanými',
+    },
+  },
+};
+
 const adjectives: Adjective[] = [
   liberalnyAdjective,
   krasnyAdjective,
@@ -1292,6 +1541,9 @@ const adjectives: Adjective[] = [
   autistickyAdjective,
   drahyAdjective,
   lacnyAdjective,
+  silnyAdjective,
+  trinastyAdjective,
+  zapredanyAdjective,
 ];
 
 export default adjectives;

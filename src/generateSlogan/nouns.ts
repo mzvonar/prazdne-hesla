@@ -49,6 +49,7 @@ const sportNoun: Noun = {
   word: "šport",
   type: "noun",
   gender: "masculine",
+  model: 'dub',
   cases: {
     nominative: { singular: "šport", plural: "športy" },
     genitive: { singular: "športu", plural: "športov" },
@@ -78,6 +79,7 @@ const oxymoronNoun: Noun = {
   word: "oxymoron",
   type: "noun",
   gender: "masculine",
+  model: 'dub',
   cases: {
     nominative: { singular: "oxymoron", plural: "oxymorony" },
     genitive: { singular: "oxymoronu", plural: "oxymoronov" },
@@ -328,6 +330,7 @@ const termenNoun: Noun = {
   word: "termeň",
   type: "noun",
   gender: "masculine",
+  model: 'stroj',
   cases: {
     nominative: {
       singular: "termeň",
@@ -392,6 +395,7 @@ const konfucianizmusNoun: Noun = {
   word: "konfucianizmus",
   type: "noun",
   gender: "masculine",
+  model: 'dub',
   cases: {
     nominative: {
       singular: "konfucianizmus",
@@ -452,6 +456,105 @@ const piskotaNoun: Noun = {
   },
 };
 
+const clovekNoun: Noun = {
+  word: "človek",
+  type: "noun",
+  gender: "masculine",
+  cases: {
+    nominative: {
+      singular: "človek",
+      plural: "ľudia",
+    },
+    genitive: {
+      singular: "človeka",
+      plural: "ľudí",
+    },
+    dative: {
+      singular: "človeku",
+      plural: "ľuďom",
+    },
+    accusative: {
+      singular: "človeka",
+      plural: "ľudí",
+    },
+    locative: {
+      singular: "človeku",
+      plural: "ľuďoch",
+    },
+    instrumental: {
+      singular: "človekom",
+      plural: "ľuďmi",
+    },
+  },
+};
+
+const spalovaciMotorNoun: Noun = {
+  word: "spaľovací motor",
+  type: "noun",
+  gender: "masculine",
+  model: 'dub',
+  cases: {
+    nominative: {
+      singular: "spaľovací motor",
+      plural: "spaľovacie motory",
+    },
+    genitive: {
+      singular: "spaľovacieho motora",
+      plural: "spaľovacích motorov",
+    },
+    dative: {
+      singular: "spaľovaciemu motoru",
+      plural: "spaľovacým motorom",
+    },
+    accusative: {
+      singular: "spaľovací motor",
+      plural: "spaľovacie motory",
+    },
+    locative: {
+      singular: "spaľovacom motore",
+      plural: "spaľovacých motoroch",
+    },
+    instrumental: {
+      singular: "spaľovacým motorom",
+      plural: "spaľovacými motormi",
+    },
+  },
+};
+
+const bordelNoun: Noun = {
+  word: 'bordel',
+  type: 'noun',
+  gender: 'masculine',
+  model: 'stroj',
+  cases: {
+    nominative: {
+      singular: 'bordel',
+      plural: 'bordele',
+    },
+    genitive: {
+      singular: 'bordelu',
+      plural: 'bordelov',
+    },
+    dative: {
+      singular: 'bordelu',
+      plural: 'bordelom',
+    },
+    accusative: {
+      singular: 'bordel',
+      plural: 'bordele',
+    },
+    locative: {
+      singular: 'bordeli',
+      plural: 'bordeloch',
+    },
+    instrumental: {
+      singular: 'bordelom',
+      plural: 'bordelmi',
+    },
+  },
+};
+
+
 const nouns: Noun[] = [
   stromNoun,
   kaviarenNoun,
@@ -472,6 +575,9 @@ const nouns: Noun[] = [
   presstitutkaNoun,
   konfucianizmusNoun,
   piskotaNoun,
+  clovekNoun,
+  spalovaciMotorNoun,
+  bordelNoun,
 ];
 
 export default nouns;

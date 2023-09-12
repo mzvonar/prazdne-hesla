@@ -5,76 +5,18 @@ import {
   Verb,
   Adjective,
   WordType,
-  TemplateDef,
   Template,
   TemplateWordType,
   FormattingConfig,
-  FormattedWord,
+  FormattedWord, TemplateDef,
 } from './types';
 import nouns from './nouns';
 import verbs from './verbs';
 import adjectives from './adjectives';
 import { applyModel } from './models';
+import templates from './templates.ts';
 
 const ADJECTIVE_CHANCE = 0.5;
-
-const modifiers: string[] = [
-  'ani',
-  'len',
-  'iba',
-];
-
-const specials: string[] = [
-  'do každej rodiny',
-  'každému',
-];
-
-const templates: TemplateDef[] = [
-  {
-    types: ["subject", "object"],
-    cases: ["nominative", "dative"],
-  },
-  {
-    types: ["object", "subject"],
-    cases: ["dative", "nominative"],
-  },
-  {
-    types: ["verb", "subject"],
-    persons: [['firstPerson']],
-  },
-  {
-    types: ["subject", "verb"],
-    persons: [['firstPerson']],
-  },
-  {
-    types: ["object", "verb", "subject"],
-    cases: ["dative", "accusative"],
-    persons: [['firstPerson']],
-  },
-  {
-    types: ["verb", "object", "subject"],
-    cases: ["dative", "accusative"],
-    persons: [['firstPerson']],
-  },
-  {
-    types: ["special", "subject"],
-    cases: ["nominative"],
-  },
-  {
-    types: ["subject", "special"],
-    cases: ["nominative"],
-  },
-  {
-    types: ["subject"],
-    cases: ["nominative"],
-  },
-  
-  // {
-  //   types: ["modifier", "subject", "verb"],
-  //   cases: ["nominative"],
-  //   persons: [['firstPerson']],
-  // },
-];
 
 function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
@@ -91,14 +33,14 @@ function templateToWordType(value: TemplateWordType): WordType {
 }
 
 function getRandomBool(chance = 0.5) {
-  if(chance < 0) {
+  if (chance < 0) {
     throw new Error('Chance must be greater or equal to zero');
   }
 
-  if(chance > 1) {
+  if (chance > 1) {
     throw new Error('Chance must be lower or equal to 1');
   }
-  
+
   return Math.random() < chance;
 }
 
@@ -106,10 +48,10 @@ function getRandomItem<T>(arr: T[], overrideIndex?: number): T {
   const randomIndex = overrideIndex || Math.floor(Math.random() * arr.length);
   const item = arr[randomIndex];
 
-  if(!item) {
+  if (!item) {
     throw new Error(`Couldn't get random item at index ${randomIndex}`);
   }
-  
+
   return item;
 }
 
@@ -120,6 +62,8 @@ function getRandomTemplate(overrideIndex?: number): Template {
     ...template,
     cases: template.cases || [],
     persons: template.persons || [],
+    counts: template.counts || [],
+    customWords: template.customWords || [],
   }
 }
 
@@ -160,7 +104,7 @@ function formatNoun(noun: Noun, adjectives: Adjective[], { caseKey, countKey }: 
     const adjective = getAdjective(adjectives, noun.model, { gender, caseKey: _caseKey, countKey: _countKey });
     words.push(adjective.value);
   }
-  
+
   words.push(word);
 
   return {
@@ -190,11 +134,10 @@ function formatVerb(verb: Verb, { personKey, countKey }: FormattingConfig, isFir
 
   let value = word;
 
-  if(verb.pronoun) {
-    if(isFirst) {
+  if (verb.pronoun) {
+    if (isFirst) {
       value += ' ' + verb.pronoun;
-    }
-    else {
+    } else {
       value = verb.pronoun + ' ' + value;
     }
   }
@@ -208,35 +151,35 @@ function formatVerb(verb: Verb, { personKey, countKey }: FormattingConfig, isFir
 }
 
 function formatAdjective(adjective: Adjective, { gender, caseKey, countKey }: FormattingConfig): FormattedWord {
-    console.log('==getAdjective==');
-    console.log("adjective word: ", adjective.word);
-    console.log("gender: ", gender);
-    console.log("caseKey: ", caseKey);
-    console.log("countKey: ", countKey);
+  console.log('==getAdjective==');
+  console.log("adjective word: ", adjective.word);
+  console.log("gender: ", gender);
+  console.log("caseKey: ", caseKey);
+  console.log("countKey: ", countKey);
 
-    const word = adjective[gender][caseKey][countKey];
+  const word = adjective[gender][caseKey][countKey];
 
-    console.log("word: ", word);
+  console.log("word: ", word);
 
-    return {
-      word: adjective,
-      value: word,
-      gender,
-      countKey,
-    };
-  }
+  return {
+    word: adjective,
+    value: word,
+    gender,
+    countKey,
+  };
+}
 
 function formatWord(word: WordDefinition, adjectives, formattingConfig: FormattingConfig, isFirst: boolean) {
-  switch(word.type) {
-      case 'noun':
-        return formatNoun(word, adjectives, formattingConfig);
-      case 'verb':
-        return formatVerb(word, formattingConfig, isFirst);
-      case 'adjective':
-        return formatAdjective(word, formattingConfig);
-      default:
-        throw new Error(`Can't get random word of type ${type}`);
-    }
+  switch (word.type) {
+    case 'noun':
+      return formatNoun(word, adjectives, formattingConfig);
+    case 'verb':
+      return formatVerb(word, formattingConfig, isFirst);
+    case 'adjective':
+      return formatAdjective(word, formattingConfig);
+    default:
+      throw new Error(`Can't get random word of type ${type}`);
+  }
 }
 
 function getNoun(nouns: Noun[], adjectives: Adjective[], formattingConfig: FormattingConfig): FormattedWord {
@@ -252,128 +195,150 @@ function getVerb(verbs: Verb[], formattingConfig: FormattingConfig, isFirst = tr
 }
 
 function getAdjective(adjectives: Adjective[], modelType: string | undefined, formattingConfig: FormattingConfig): FormattedWord {
-    const adjective = getRandomAdjective(adjectives);
-    const updatedAdjective = applyModel(modelType, adjective);
+  const adjective = getRandomAdjective(adjectives);
+  const updatedAdjective = applyModel(modelType, adjective);
 
-    return formatAdjective(updatedAdjective, formattingConfig);
-  }
+  return formatAdjective(updatedAdjective, formattingConfig);
+}
 
 function makeGetRandomWord(nouns: Noun[], verbs: Verb[], adjectives: Adjective[]) {
   return (type: WordType) => {
-    switch(type) {
+    switch (type) {
       case 'noun':
         return getRandomItem(nouns);
       case 'verb':
         return getRandomItem(verbs);
       case 'adjective':
         return getRandomItem(adjectives);
-      case 'modifier': {
-        const value = getRandomItem(modifiers);
-        return { type: 'modifier', value };
-      }
-      case 'special': {
-        const value = getRandomItem(specials);
-        return { type: 'special', value };
-      }
       default:
         throw new Error(`Can't get random word of type ${type}`);
     }
   }
 }
 
+const getTemplateId = (template: TemplateDef | Template): string => {
+  return template.types.join('-');
+}
+
 function generateSentenceFromTemplate(getRandomWord: () => WordDefinition, template: Template) {
+  console.log('============');
   console.log('==template: ', template.types.join('-'), '==');
-  
+
+  const customWords = template.customWords.slice();
   const wordDefinitions: (WordDefinition & { templateWordType: TemplateWordType })[] = template.types.map((templateWordType) => {
-      const wordType = templateToWordType(templateWordType);
-      
-      const word = getRandomWord(wordType);
-      
+    if(templateWordType === 'custom') {
+      const words = customWords.pop();
+
+      if(!words) {
+        throw new Error(`No custom words defined for template ${getTemplateId(template)}`);
+      }
+
+      const value = getRandomItem(words);
+
+      const word = typeof value === 'string' ? { type: 'custom', value } : value;
+
       return {
         ...word,
         templateWordType,
       };
-    });
-    
-    const words: FormattedWord & { templateWordType: TemplateWordType }[] = [];
-    const cases = template.cases.slice();
-    const persons = template.persons.slice();
+    }
+    else {
+      const wordType = templateToWordType(templateWordType);
 
-    for(const [indexStr, wordDef] of Object.entries(wordDefinitions)) {
-      const templateWordType = wordDef.templateWordType;
+      const word = getRandomWord(wordType);
 
-      if(['modifier', 'special'].includes(wordDef.type)) {
-        words.push({
-          ...wordDef,
-          templateWordType,
-        });
-
-        continue;
-      }
-
-      const index = parseInt(indexStr, 10);
-      const wordType = wordDef.type;
-      const previousWordDef = wordDefinitions[index - 1];
-      const nextWordDef = wordDefinitions[index + 1];
-      const previousWord = words[words.length - 1];
-      const templateCaseKey = wordType === 'noun' ? cases.shift() : undefined;
-      const templatePersonKeys = wordType === 'verb' ? persons.shift() : undefined;
-
-      console.log(`==Word: ${templateWordType}==`);
-      console.log('templateCaseKey', templateCaseKey);
-      console.log('templatePersonKeys', templatePersonKeys)
-      
-      
-      
-      const getCaseKey = () => {
-        const connectedVerb = nextWordDef?.type === 'verb' ? nextWordDef : (previousWordDef?.type === 'verb' ? previousWordDef : undefined);
-          console.log('connectedVerb', connectedVerb?.word)
-        
-        if(templateWordType === 'subject' && connectedVerb?.nounCase && !templateCaseKey) {
-          if(connectedVerb) {
-            return connectedVerb.nounCase;
-          }
-        }
-
-        if(templateWordType === 'object' && !templateCaseKey) {
-          if(connectedVerb?.objectCase) {
-            return connectedVerb.objectCase;
-          }
-        }
-
-        if(templateWordType === 'subject' && !templateCaseKey) {
-          if(connectedVerb?.subjectCase) {
-            return connectedVerb.subjectCase;
-          }
-        }
-
-        return wordType === 'noun' ? templateCaseKey : undefined;
-      }
-      
-      const caseKey = getCaseKey();
-      const formattingConfig: FormattingConfig = { caseKey };
-      
-      if(previousWord?.templateWordType === 'object' && templateWordType === 'verb') {
-        formattingConfig.countKey = previousWord.countKey;
-      }
-
-      if(wordType === 'verb' && templatePersonKeys) {
-        const personKey = getRandomItem(templatePersonKeys);
-        formattingConfig.personKey = personKey;
-      }
-
-      const isFirst = !previousWordDef;
-      const word = formatWord(wordDef, adjectives, formattingConfig, isFirst);
-
-      words.push({
+      return {
         ...word,
         templateWordType,
+      };
+    }
+  });
+
+  const words: FormattedWord & { templateWordType: TemplateWordType }[] = [];
+  const cases = template.cases.slice();
+  const counts = template.counts.slice();
+  const persons = template.persons.slice();
+
+  for (const [indexStr, wordDef] of Object.entries(wordDefinitions)) {
+    const templateWordType = wordDef.templateWordType;
+
+    const templateCountKey = counts.shift();
+
+    if (wordDef.type === 'custom') {
+      words.push({
+        ...wordDef,
+        templateWordType,
       });
+
+      continue;
     }
 
-    const sentence = words
-      .map((word) => word.value)
-      .join(' ');
+    const index = parseInt(indexStr, 10);
+    const wordType = wordDef.type;
+    const previousWordDef = wordDefinitions[index - 1];
+    const nextWordDef = wordDefinitions[index + 1];
+    const previousWord = words[words.length - 1];
+    const templateCaseKey = wordType === 'noun' ? cases.shift() : undefined;
+    const templatePersonKeys = wordType === 'verb' ? persons.shift() : undefined;
+
+    console.log(`==Word: ${templateWordType}==`);
+    console.log('templateCaseKey', templateCaseKey);
+    console.log('templatePersonKeys', templatePersonKeys)
+
+
+    const getCaseKey = () => {
+      const connectedVerb = nextWordDef?.type === 'verb' ? nextWordDef : (previousWordDef?.type === 'verb' ? previousWordDef : undefined);
+      console.log('connectedVerb', connectedVerb?.word)
+
+      if (templateWordType === 'subject' && connectedVerb?.nounCase && !templateCaseKey) {
+        if (connectedVerb) {
+          return connectedVerb.nounCase;
+        }
+      }
+
+      if (templateWordType === 'object' && (!templateCaseKey || template.preferVerbCaseOverride)) {
+        if (connectedVerb?.objectCase) {
+          return connectedVerb.objectCase;
+        }
+      }
+
+      if (templateWordType === 'subject' && (!templateCaseKey || template.preferVerbCaseOverride)) {
+        if (connectedVerb?.subjectCase) {
+          return connectedVerb.subjectCase;
+        }
+      }
+
+      return wordType === 'noun' ? templateCaseKey : undefined;
+    }
+
+    const caseKey = getCaseKey();
+    const formattingConfig: FormattingConfig = { caseKey };
+
+    if (previousWord?.templateWordType === 'object' && templateWordType === 'verb') {
+      formattingConfig.countKey = previousWord.countKey;
+    }
+
+    if (wordType === 'verb' && templatePersonKeys) {
+      const personKey = getRandomItem(templatePersonKeys);
+      formattingConfig.personKey = personKey;
+    }
+
+    if(templateCountKey) {
+      formattingConfig.countKey = templateCountKey;
+    }
+
+    const isFirst = !previousWordDef;
+    const word = formatWord(wordDef, adjectives, formattingConfig, isFirst);
+
+    words.push({
+      ...word,
+      templateWordType,
+    });
+  }
+
+  const sentence = words
+    .map((word) => word.value)
+    .join(' ');
 
   return capitalize(sentence);
 }
@@ -389,17 +354,15 @@ function generateSentence(
     const template = getRandomTemplate();
 
     return generateSentenceFromTemplate(getRandomWord, template);
-  }
-  catch (error) {
-      if (maxTries <= 1) {
-        throw error
-      }
-      else {
-        //console.error(`Error on step ${tries}: ${error.message}`);
-        throw error;
-        // return generateSentence(nouns, verbs, adjectives, maxTries - 1);
-      }
+  } catch (error) {
+    if (maxTries <= 1) {
+      throw error
+    } else {
+      //console.error(`Error on step ${tries}: ${error.message}`);
+      throw error;
+      // return generateSentence(nouns, verbs, adjectives, maxTries - 1);
     }
+  }
 }
 
 export default () => {

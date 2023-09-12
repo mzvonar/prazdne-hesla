@@ -192,6 +192,106 @@ const otupjievatVerb: Verb = {
   },
 };
 
+const upratatVerb: Verb = {
+  word: 'upratať',
+  type: 'verb',
+  present: {
+    firstPerson: {
+      singular: 'upratujem',
+      plural: 'upratujeme',
+    },
+    secondPerson: {
+      singular: 'upratuješ',
+      plural: 'upratujete',
+    },
+    thirdPerson: {
+      singular: 'upratuje',
+      plural: 'upratujú',
+    },
+  },
+  future: {
+    firstPerson: {
+      singular: 'upracem',
+      plural: 'upraceme',
+    },
+    secondPerson: {
+      singular: 'upraceš',
+      plural: 'upracete',
+    },
+    thirdPerson: {
+      singular: 'uprace',
+      plural: 'upracú',
+    },
+  },
+};
+
+const rozkradnutVerb: Verb = {
+  word: 'rozkradnúť',
+  type: 'verb',
+  present: {
+    firstPerson: {
+      singular: 'rozkrádam',
+      plural: 'rozkrádame',
+    },
+    secondPerson: {
+      singular: 'rozkrádaš',
+      plural: 'rozkrádate',
+    },
+    thirdPerson: {
+      singular: 'rozkráda',
+      plural: 'rozkrádajú',
+    },
+  },
+  future: {
+    firstPerson: {
+      singular: 'rozkradnem',
+      plural: 'rozkradneme',
+    },
+    secondPerson: {
+      singular: 'rozkradneš',
+      plural: 'rozkradnete',
+    },
+    thirdPerson: {
+      singular: 'rozkradne',
+      plural: 'rozkradnú',
+    },
+  },
+};
+
+const nepredatVerb: Verb = {
+  word: 'nepredať',
+  type: 'verb',
+  subjectCase: 'accusative',
+  present: {
+    firstPerson: {
+      singular: 'nepredám',
+      plural: 'nepredáme',
+    },
+    secondPerson: {
+      singular: 'nepredáš',
+      plural: 'nepredáte',
+    },
+    thirdPerson: {
+      singular: 'nepredá',
+      plural: 'nepredajú',
+    },
+  },
+  future: {
+    firstPerson: {
+      singular: 'nepredám',
+      plural: 'nepredáme',
+    },
+    secondPerson: {
+      singular: 'nepredáš',
+      plural: 'nepredáte',
+    },
+    thirdPerson: {
+      singular: 'nepredá',
+      plural: 'nepredajú',
+    },
+  },
+};
+
 const verbs: Verb[] = [
   zabranitVerb,
   zastavitVerb,
@@ -200,6 +300,9 @@ const verbs: Verb[] = [
   znizitVerb,
   zasluzitVerb,
   otupjievatVerb,
+  upratatVerb,
+  rozkradnutVerb,
+  nepredatVerb,
 ];
 
 export default verbs;

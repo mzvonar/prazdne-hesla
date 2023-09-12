@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import { HeadProvider } from 'react-head';
 import App from './App.tsx'
 import Slogan from './Slogan.tsx';
 import PrivacyPolicy from './PrivacyPolicy.tsx';
@@ -26,6 +27,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <HeadProvider>
+      <RouterProvider router={router} />
+    </HeadProvider>
   </React.StrictMode>,
 )

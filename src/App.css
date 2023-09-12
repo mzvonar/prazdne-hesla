@@ -1,10 +1,3 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -43,30 +36,19 @@
 
 .buttons {
   display: flex;
+  margin-top: 3rem;
   margin-bottom: 20px;
+  justify-content: space-between;
 }
 
 .upload-btn-wrapper {
   position: relative;
   overflow: hidden;
   display: inline-block;
-  /*background-color: #fff;*/
-  /*border: 1px solid #cdcdcd;*/
-  /*border-radius: 3px;*/
-  /*padding: 8px 12px;*/
-  /*height: 29px!important;*/
-  /*width:calc(100% - 26px);*/
   margin-right: 20px;
 }
 
 .upload-btn-wrapper .btnr {
-  /*border: 1px solid gray;*/
-  /*color: gray;*/
-  /*background-color: #eee;*/
-  /*padding: 5px 10px;*/
-  /*border-radius: 1px;*/
-  /*font-size: 14px;*/
-  /*font-weight: bold;*/
   position: relative;
 }
 .upload-btn-wrapper .btnr + span {
@@ -89,10 +71,15 @@
 
 .share-buttons {
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .share-buttons button {
   margin-left: 10px;
   margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+#slogan-canvas {
+  width: 100%;
 }

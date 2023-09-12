@@ -1,7 +1,6 @@
-// @ts-nocheck TODO: Fix types
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import generateSlogan from './generateSlogan';
@@ -10,14 +9,49 @@ import billboard1Src from './assets/billboard1.jpg';
 import RefreshIcon from './RefreshIcon.tsx';
 import './App.css';
 import { imageNameToUrlParameter } from './utils.ts';
+import { Meta } from 'react-head';
 
-const MAX_WIDTH = 800;
-const MAX_HEIGHT = 600;
+const MAX_WIDTH = 1024;
+const MAX_HEIGHT = 768;
 
 const isDev = import.meta.env.APP_ENV !== 'production';
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 
-const billboard1 = {
+interface Positioning {
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
+}
+
+interface TextConfig {
+  left?: number;
+  right?: number;
+  top?: number;
+  bottom?: number;
+  fontSize: number;
+  font?: string;
+  horizontalPadding: number;
+  verticalPadding: number;
+  horizontalAlign: 'left' | 'right';
+  verticalAlign: 'top' | 'bottom';
+}
+
+interface Billboard {
+  image: string;
+  photo: {
+    left?: number;
+    right?: number;
+    top?: number;
+    bottom?: number;
+    width: number;
+    height: number;
+  },
+  slogan: TextConfig;
+  notice: TextConfig;
+}
+
+const billboard1: Billboard = {
   image: billboard1Src,
   photo: {
     left: 0.05,
@@ -46,7 +80,7 @@ const billboard1 = {
 };
 
 
-function resizeImageToFitContainer({ left, right, top, bottom }, imageWidth: number, imageHeight: number, containerWidth: number, containerHeight: number, widthPercentage: number, heightPercentage: number) {
+function resizeImageToFitContainer({ left, right, top, bottom }: Positioning, imageWidth: number, imageHeight: number, containerWidth: number, containerHeight: number, widthPercentage: number, heightPercentage: number) {
   // Calculate the available width and height within the container
   const availableWidth = containerWidth - (left || 0) - (right || 0);
   const availableHeight = containerHeight - (top || 0) - (bottom || 0);
@@ -78,8 +112,8 @@ function resizeImageToFitContainer({ left, right, top, bottom }, imageWidth: num
     newWidth = availableHeight * imageAspectRatio;
   }
   
-  const horSpace = typeof left !== 'undefined' ? left * containerWidth : right * containerWidth;
-  const vertSpace = typeof top !== 'undefined' ? top * containerHeight : bottom * containerHeight;
+  const horSpace = typeof left !== 'undefined' ? left * containerWidth : (right || 0) * containerWidth;
+  const vertSpace = typeof top !== 'undefined' ? top * containerHeight : (bottom || 0) * containerHeight;
 
   const x = typeof left !== 'undefined' ? horSpace : containerWidth - (horSpace + newWidth);
   const y = typeof top !== 'undefined' ? vertSpace : containerHeight - (vertSpace + newHeight);
@@ -87,14 +121,14 @@ function resizeImageToFitContainer({ left, right, top, bottom }, imageWidth: num
   return { x, y, width: newWidth, height: newHeight };
 }
 
-function renderTextOnCanvasWrapped(canvas, ctx, text, {
+function renderTextOnCanvasWrapped(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, text: string, {
   left: leftPerc, right: rightPerc, top: topPerc, bottom: bottomPerc,
   horizontalPadding: horPaddingPerc, verticalPadding: vertPaddingPerc,
   horizontalAlign = 'left',
   verticalAlign = 'bottom',
   fontSize = 16,
   font = 'Arial',
-}, containerWidth, containerHeight) {
+}: TextConfig, containerWidth: number, containerHeight: number) {
   // const ctx = canvas.getContext('2d');
   const left = leftPerc && leftPerc * containerWidth;
   const right = rightPerc && rightPerc * containerWidth;
@@ -112,7 +146,7 @@ function renderTextOnCanvasWrapped(canvas, ctx, text, {
   ctx.textBaseline = verticalAlign;
 
   // Split the text into lines that fit within the maximum width
-  function wrapText(text) {
+  function wrapText(text: string) {
     const words = text.split(' ');
     const lines = [];
     let line = '';
@@ -153,24 +187,25 @@ function renderTextOnCanvasWrapped(canvas, ctx, text, {
   //   y = canvas.height / 2 - totalTextHeight / 2 + fontSize;
   // }
   // Calculate x and y positions for horizontal and vertical alignment
-  let x, y;
+  let x: number;
+  let y: number;
 
   if (horizontalAlign === 'left') {
-    x = left + horizontalPadding;
+    x = (left || 0) + horizontalPadding;
   } else if (horizontalAlign === 'right') {
-    x = canvas.width - right - maxTextWidth - horizontalPadding;
+    x = canvas.width - (right || 0) - maxTextWidth - horizontalPadding;
   } else {
     // Default to 'center' alignment if not 'left' or 'right'
-    x = left + (containerWidth - maxTextWidth) / 2;
+    x = (left || 0) + (containerWidth - maxTextWidth) / 2;
   }
 
   if (verticalAlign === 'top') {
-    y = top + (typeof top === 'undefined' ? verticalPadding : 0);
+    y = (top || 0) + (typeof top === 'undefined' ? verticalPadding : 0);
   } else if (verticalAlign === 'bottom') {
-    y = canvas.height - bottom - totalTextHeight - (typeof bottom === 'undefined' ? verticalPadding : 0);
+    y = canvas.height - (bottom || 0) - totalTextHeight - (typeof bottom === 'undefined' ? verticalPadding : 0);
   } else {
     // Default to 'middle' alignment if not 'top' or 'bottom'
-    y = top + (containerHeight - totalTextHeight) / 2;
+    y = (top || 0) + (containerHeight - totalTextHeight) / 2;
   }
 
   // Clear the canvas and render the wrapped text
@@ -196,8 +231,7 @@ async function uploadImage(token: string, imageBase64: string) {
 }
 
 function App() {
-  const navigate = useNavigate();
-  const [userImage, setUserImage] = useState(null);
+  const [userImage, setUserImage] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const devImageRef = useRef(false);
@@ -271,34 +305,39 @@ function App() {
     }
   };
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if(!file) {
+      throw new Error('File is empty');
+    }
+
     const imageUrl = URL.createObjectURL(file);
     setUserImage(imageUrl);
   };
 
-  const handleFacebookShare = async (e) => {
+  const handleFacebookShare = async (e: MouseEvent) => {
     e.preventDefault();
 
-    if (userImage) {
-      await grecaptcha.ready(async () => {
+    const canvas = canvasRef.current;
+
+    if (userImage && canvas) {
+      grecaptcha.ready(async () => {
         try {
           const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
-          const imageDataURL = getImageAsBase64(canvasRef.current);
+          const imageDataURL = getImageAsBase64(canvas);
 
           const  { imageName } = await uploadImage(token, imageDataURL);
 
           const imageUrlParam = imageNameToUrlParameter(imageName);
           const urlToShare = new URL(`/slogan/${imageUrlParam}`, window.location.origin);
-          // const encodedUrlToShare = encodeURIComponent(urlToShare);
-          //
-          // // Create the Facebook share URL
-          // const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
-          //
-          // // Open a new window with the Facebook share dialog
-          // window.open(facebookShareUrl, 'Share on Facebook', 'width=600,height=400');
+          const encodedUrlToShare = encodeURIComponent(urlToShare.toString());
 
-          navigate(`${urlToShare}?share=1`);
+          // Create the Facebook share URL
+          const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
+
+          // Open a new window with the Facebook share dialog
+          window.open(facebookShareUrl, 'Share on Facebook', 'width=600,height=400');
         }
         catch(e) {
           console.error(e);
@@ -308,21 +347,23 @@ function App() {
     }
   };
 
-  const handleDownloadImage = (e) => {
+  const handleDownloadImage = (e: MouseEvent) => {
     e.preventDefault();
 
     const canvas = canvasRef.current;
 
-    const imageDataURL = getImageAsBase64(canvas);
+    if(canvas) {
+      const imageDataURL = getImageAsBase64(canvas);
 
-    const downloadLink = document.createElement('a');
-    downloadLink.href = imageDataURL;
-    const slogan = canvas.dataset.slogan || 'slogan';
-    const fileName = slogan.split(' ').join('_');
+      const downloadLink = document.createElement('a');
+      downloadLink.href = imageDataURL;
+      const slogan = canvas.dataset.slogan || 'slogan';
+      const fileName = slogan.split(' ').join('_');
 
-    downloadLink.download = `${fileName}.jpg`;
+      downloadLink.download = `${fileName}.jpg`;
 
-    downloadLink.click();
+      downloadLink.click();
+    }
   };
 
   useEffect(() => {
@@ -336,6 +377,10 @@ function App() {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
+        if(!ctx) {
+          throw new Error("Couldn't get canvas context");
+        }
+
         // Set the canvas dimensions to match the image dimensions
         canvas.width = image.width;
         canvas.height = image.height;
@@ -345,6 +390,10 @@ function App() {
 
         // Convert the canvas content to a Blob
         canvas.toBlob(function (blob) {
+          if(!blob) {
+            throw new Error("Couldn't get canvas as blob");
+          }
+
           // Create an object URL for the Blob
           const imageUrl = URL.createObjectURL(blob);
           setUserImage(imageUrl);
@@ -361,6 +410,8 @@ function App() {
 
   return (
     <div className="App">
+      <Meta property="og:image" content="/cover.jpg" />
+
       <ToastContainer />
 
       <h1>Vygenerujte si prázdne heslá</h1>
@@ -385,27 +436,27 @@ function App() {
             onChange={handleImageUpload}
           />
         </div>
+
         {userImage &&
-          <button className="primary" onClick={handleGenerateBillboard}>
+          <button className="secondary" onClick={handleGenerateBillboard}>
             <span className="icon refresh-icon">
               <RefreshIcon />
             </span>
             Vygeneruj nový billboard
           </button>
         }
-
       </div>
 
       {userImage && (
         <div>
-          <canvas ref={canvasRef} width={400} height={300}></canvas>
+          <canvas id="slogan-canvas" ref={canvasRef} width={400} height={300}></canvas>
         </div>
       )}
 
       {userImage &&
         <>
           <div className="share-buttons">
-            <button id="share-fb-button" onClick={handleFacebookShare}>
+            <button id="share-fb-button" className="primary" onClick={handleFacebookShare}>
               Zdieľať na Facebooku
             </button>
             <button id="save-image-button" onClick={handleDownloadImage}>
@@ -414,8 +465,8 @@ function App() {
           </div>
 
           <p>
-            Vidíte aké ľahké je náhodne vygenerovať prázdny politický slogan? Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />
-            Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.
+            Je celkom ľahké náhodne vygenerovať prázdny politický slogan. Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />
+            <strong>Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.</strong>
           </p>
 
           <p>

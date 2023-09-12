@@ -1,7 +1,22 @@
-// @ts-nocheck TODO: Fix types
-import { Adjective, Case, Count } from './types.ts';
+import { Adjective, Case, Count, Gender } from './types.ts';
 
-const dubModel = {
+interface ModelCountMap {
+  singular?: Gender | [Gender] | [Gender, Case];
+  plural?: Gender | [Gender] | [Gender, Case];
+}
+
+interface Model {
+  type: string;
+  gender: Gender;
+  nominative?: ModelCountMap;
+  genitive?: ModelCountMap;
+  dative?: ModelCountMap;
+  accusative?: ModelCountMap;
+  locative?: ModelCountMap;
+  instrumental?: ModelCountMap;
+}
+
+const dubModel: Model = {
   type: 'dub',
   gender: 'masculine',
   nominative: {
@@ -13,7 +28,7 @@ const dubModel = {
   }
 };
 
-const strojModel = {
+const strojModel: Model = {
   type: 'stroj',
   gender: 'masculine',
   nominative: {
@@ -25,7 +40,7 @@ const strojModel = {
   }
 }
 
-export const models = [
+export const models: Model[] = [
   dubModel,
   strojModel,
 ];
@@ -63,7 +78,7 @@ export const applyModel = (modelType: string | undefined, adjective: Adjective):
   allCases.forEach((caseKey) => {
     allCounts.forEach((countKey) => {
       const overrideRaw = model[caseKey]?.[countKey];
-      const override = overrideRaw && (Array.isArray(overrideRaw) ? overrideRaw : [overrideRaw]);
+      const override: [Gender] | [Gender, Case] | undefined = overrideRaw && (Array.isArray(overrideRaw) ? overrideRaw : [overrideRaw]);
 
       if(override) {
         const [genderOverride, caseOverride] = override;

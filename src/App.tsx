@@ -1,7 +1,7 @@
 // @ts-nocheck TODO: Fix types
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import generateSlogan from './generateSlogan';
@@ -196,6 +196,7 @@ async function uploadImage(token: string, imageBase64: string) {
 }
 
 function App() {
+  const navigate = useNavigate();
   const [userImage, setUserImage] = useState(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -207,6 +208,7 @@ function App() {
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleGenerateBillboard = () => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext('2d');
@@ -288,13 +290,15 @@ function App() {
 
           const imageUrlParam = imageNameToUrlParameter(imageName);
           const urlToShare = new URL(`/slogan/${imageUrlParam}`, window.location.origin);
-          const encodedUrlToShare = encodeURIComponent(urlToShare);
+          // const encodedUrlToShare = encodeURIComponent(urlToShare);
+          //
+          // // Create the Facebook share URL
+          // const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
+          //
+          // // Open a new window with the Facebook share dialog
+          // window.open(facebookShareUrl, 'Share on Facebook', 'width=600,height=400');
 
-          // Create the Facebook share URL
-          const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
-
-          // Open a new window with the Facebook share dialog
-          window.open(facebookShareUrl, 'Share on Facebook', 'width=600,height=400');
+          navigate(`${urlToShare}?share=1`);
         }
         catch(e) {
           console.error(e);
@@ -347,7 +351,7 @@ function App() {
         }, 'image/jpeg'); // Specify the desired image format (e.g., 'image/jpeg' or 'image/png')
       };
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if(userImage) {

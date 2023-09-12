@@ -529,7 +529,7 @@ const bordelNoun: Noun = {
   cases: {
     nominative: {
       singular: 'bordel',
-      plural: 'bordele',
+      plural: 'bordely',
     },
     genitive: {
       singular: 'bordelu',
@@ -541,7 +541,7 @@ const bordelNoun: Noun = {
     },
     accusative: {
       singular: 'bordel',
-      plural: 'bordele',
+      plural: 'bordely',
     },
     locative: {
       singular: 'bordeli',

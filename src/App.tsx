@@ -6,6 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import generateSlogan from './generateSlogan';
 import userPlaceholderSrc from './assets/user_placeholder.jpg';
 import billboard1Src from './assets/billboard1.jpg';
+import billboard2Src from './assets/billboard2.jpg';
+import billboard3Src from './assets/billboard3.jpg';
 import RefreshIcon from './RefreshIcon.tsx';
 import './App.css';
 import { imageNameToUrlParameter } from './utils.ts';
@@ -31,6 +33,7 @@ interface TextConfig {
   bottom?: number;
   fontSize: number;
   font?: string;
+  color?: string;
   horizontalPadding: number;
   verticalPadding: number;
   horizontalAlign: 'left' | 'right';
@@ -79,6 +82,77 @@ const billboard1: Billboard = {
   }
 };
 
+const billboard2: Billboard = {
+  image: billboard2Src,
+  photo: {
+    left: 0.12,
+    bottom: 0,
+    width: 0.3,
+    height: 0.8,
+  },
+  slogan: {
+    left: 0.4,
+    top: 0.3,
+    fontSize: 50,
+    color: '#b7151c',
+    horizontalPadding: 0.05,
+    verticalPadding: 0.05,
+    horizontalAlign: 'left',
+    verticalAlign: 'top',
+  },
+  notice: {
+    left: 0.4,
+    bottom: 0.005,
+    fontSize: 15,
+    color: '#000',
+    horizontalPadding: 0.05,
+    verticalPadding: 0.05,
+    horizontalAlign: 'left',
+    verticalAlign: 'bottom',
+  }
+};
+
+const billboard3: Billboard = {
+  image: billboard3Src,
+  photo: {
+    left: 0.05,
+    bottom: 0,
+    width: 0.3,
+    height: 0.8,
+  },
+  slogan: {
+    left: 0.35,
+    top: 0.3,
+    fontSize: 50,
+    color: '#000',
+    horizontalPadding: 0.05,
+    verticalPadding: 0.05,
+    horizontalAlign: 'left',
+    verticalAlign: 'top',
+  },
+  notice: {
+    left: 0.35,
+    bottom: 0.01,
+    fontSize: 15,
+    color: '#000',
+    horizontalPadding: 0.05,
+    verticalPadding: 0.05,
+    horizontalAlign: 'left',
+    verticalAlign: 'bottom',
+  }
+};
+
+
+const billboards: Billboard[] = [
+  billboard1,
+  billboard2,
+  billboard3,
+]
+
+function getRandomBillboard() {
+  const randomIndex = Math.floor(Math.random() * billboards.length);
+  return billboards[randomIndex];
+}
 
 function resizeImageToFitContainer({ left, right, top, bottom }: Positioning, imageWidth: number, imageHeight: number, containerWidth: number, containerHeight: number, widthPercentage: number, heightPercentage: number) {
   // Calculate the available width and height within the container
@@ -127,6 +201,7 @@ function renderTextOnCanvasWrapped(canvas: HTMLCanvasElement, ctx: CanvasRenderi
   horizontalAlign = 'left',
   verticalAlign = 'bottom',
   fontSize = 16,
+  color = '#fff',
   font = 'Arial',
 }: TextConfig, containerWidth: number, containerHeight: number) {
   // const ctx = canvas.getContext('2d');
@@ -208,6 +283,7 @@ function renderTextOnCanvasWrapped(canvas: HTMLCanvasElement, ctx: CanvasRenderi
     y = (top || 0) + (containerHeight - totalTextHeight) / 2;
   }
 
+  ctx.fillStyle = color;
   // Clear the canvas and render the wrapped text
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
   wrappedText.forEach((line) => {
@@ -249,7 +325,7 @@ function App() {
     const context = canvas?.getContext('2d');
 
     if (userImage && canvas && context) {
-      const billboard = billboard1;
+      const billboard = getRandomBillboard();
       const slogan = generateSlogan();
 
       canvas.dataset.slogan = slogan;

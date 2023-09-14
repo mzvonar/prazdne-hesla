@@ -99,6 +99,7 @@ function renderImageInCanvas(
   y: number,
   width: number,
   height: number,
+  horizontalAlign: 'left' | 'center' = 'center',
   verticalAlign: VerticalAlignment = 'bottom',
   horizontalPadding = 0
 ): void {
@@ -122,7 +123,11 @@ function renderImageInCanvas(
   }
 
   // Calculate the position to center the image within the bounding box
-  const offsetX = x + (paddedWidth - scaledWidth) / 2 + horizontalPadding;
+  let offsetX = x + (paddedWidth - scaledWidth) / 2 + horizontalPadding;
+
+  if(horizontalAlign === 'left') {
+    offsetX = x + horizontalPadding;
+  }
 
 
   let offsetY: number;
@@ -536,8 +541,11 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
 
   const photoRatio = pickRandom([1/3, 2/5, 1/2]);
   const photoWidth = Math.round(canvas.width * photoRatio);
+  const photoIsSmall = photoWidth <= Math.round(canvas.width / 3);
+  const imageHorizontalAlign = (photoIsSmall && !isCustomImage) ? 'left' : 'center';
+  const imageVerticalAlign = isCustomImage ? 'middle' : 'bottom';
 
-  renderImageInCanvas(canvas, image, 0, 0, photoWidth, canvas.height, isCustomImage ? 'middle' : 'bottom', isCustomImage ? 30 : 0);
+  renderImageInCanvas(canvas, image, 0, 0, photoWidth, canvas.height, imageHorizontalAlign, imageVerticalAlign, isCustomImage ? 30 : 0);
 
   const sloganIsLong = slogan.length > 25;
   const horizontalAlignment: HorizontalAlignment = pickRandom(['left', 'left', 'right']);
@@ -548,7 +556,6 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
   const sloganBottomPadding = 32;
   const shouldBeRotated = !sloganIsLong && getRandomBool(0.3);
   const angle = shouldBeRotated ? pickRandom([-4, -2]) : 0;
-  const photoIsSmall = photoWidth <= Math.round(canvas.width / 3);
   const horizontalPadding = photoIsSmall ? (sloganIsLong ? 100 : 200) : 40;
   const verticalPadding = 0;
 

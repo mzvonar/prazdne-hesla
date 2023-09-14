@@ -4,6 +4,7 @@ import axios from 'axios';
 import {v2 as cloudinary} from 'cloudinary';
 
 const RECAPTCHA_SECRET = process.env.GOOGLE_RECAPTCHA_SECRET;
+const IMAGE_CDN_FOLDER = process.env.VITE_IMAGE_CDN_FOLDER || 'prod';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -41,10 +42,10 @@ export const handler: Handler = async (event: HandlerEvent) => {
 
       // Upload the image to Cloudinary
       const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
-        folder: 'prazdne-hesla', // Optional: Specify a folder in Cloudinary for uploads
+        folder: `prazdne-hesla/${IMAGE_CDN_FOLDER}`, // Optional: Specify a folder in Cloudinary for uploads
         public_id: imageHash,
       });
-
+console.log('uploadResponse: ', uploadResponse);
       return {
         statusCode: 200,
         body: JSON.stringify({

@@ -2,7 +2,8 @@ import { Meta } from 'react-head';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import './Slogan.css';
 
-const BASE_URL= import.meta.env.VITE_IMAGE_CDN_URL;
+const VITE_IMAGE_CDN_FOLDER = import.meta.env.VITE_IMAGE_CDN_FOLDER || 'prod';
+const BASE_URL = import.meta.env.VITE_IMAGE_CDN_URL;
 
 function Slogan() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Slogan() {
     return null;
   }
 
-  const imageUrl = `${BASE_URL}${sloganId}.jpg`;
+  const imageUrl = `${BASE_URL}/${VITE_IMAGE_CDN_FOLDER}/${sloganId}.jpg`;
 
   return (
     <div id="root">

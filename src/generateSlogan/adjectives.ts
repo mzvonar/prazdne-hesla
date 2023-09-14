@@ -794,7 +794,7 @@ const ciernyAdjective: Adjective = {
       plural: "čiernym",
     },
     accusative: {
-      singular: "čierny",
+      singular: "čierneho",
       plural: "čiernych",
     },
     locative: {

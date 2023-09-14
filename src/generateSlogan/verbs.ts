@@ -228,6 +228,7 @@ const upratatVerb: Verb = {
 const rozkradnutVerb: Verb = {
   word: 'rozkradnúť',
   type: 'verb',
+  subjectCase: 'accusative',
   present: {
     firstPerson: {
       singular: 'rozkrádam',

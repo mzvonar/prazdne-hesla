@@ -1,6 +1,5 @@
 import { Meta } from 'react-head';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { urlParameterToImageName } from './utils.ts';
 import './Slogan.css';
 
 const BASE_URL= import.meta.env.VITE_IMAGE_CDN_URL;
@@ -14,8 +13,7 @@ function Slogan() {
     return null;
   }
 
-  const imageName = urlParameterToImageName(sloganId);
-  const imageUrl = `${BASE_URL}${imageName}`;
+  const imageUrl = `${BASE_URL}${sloganId}.jpg`;
 
   return (
     <div id="root">

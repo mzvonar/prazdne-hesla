@@ -1,9 +1,5 @@
 import type { Context } from "@netlify/functions";
 
-const urlParameterToImageName = (urlParam: string) => {
-  return urlParam.split('-').join('.');
-}
-
 export default async (request: any, context: Context) => {
   const BASE_URL = Netlify.env.get("VITE_IMAGE_CDN_URL");
 
@@ -18,8 +14,7 @@ export default async (request: any, context: Context) => {
     return new Response(page, response);
   }
 
-  const imageName = urlParameterToImageName(imageParam);
-  const imageUrl = `${BASE_URL}${imageName}`;
+  const imageUrl = `${BASE_URL}${imageName}.jpg`;
 
   // const search = '<!-- OG_TAGS -->';
   const search = new RegExp('<!-- OG_TAGS_START -->[\\s\\S]*<!-- OG_TAGS_END -->', 'gm');

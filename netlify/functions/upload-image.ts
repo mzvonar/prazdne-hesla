@@ -49,7 +49,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
         statusCode: 200,
         body: JSON.stringify({
           message: 'Image uploaded successfully',
-          imageName: `${imageHash}.${uploadResponse.format}`,
+          imageName: imageHash,
           imageUrl: uploadResponse.secure_url,
         }),
       };

@@ -1,4 +1,8 @@
+import debugFactory from 'debug';
 import { Adjective, Case, Count, Gender } from './types.ts';
+
+const debug = debugFactory('app:generateSlogan:model');
+
 
 interface ModelCountMap {
   singular?: Gender | [Gender] | [Gender, Case];
@@ -69,7 +73,7 @@ export const applyModel = (modelType: string | undefined, adjective: Adjective):
 
   const modelGender = model.gender;
 
-  console.log(`Applying ${model.type} to ${adjective.word}`);
+  debug(`Applying ${model.type} to ${adjective.word}`);
 
   const adjectiveCopy = {
     ...adjective,
@@ -83,7 +87,7 @@ export const applyModel = (modelType: string | undefined, adjective: Adjective):
       if(override) {
         const [genderOverride, caseOverride] = override;
 
-        console.log(`Override ${modelGender}.${caseKey}.${countKey} to ${genderOverride}.${caseOverride || caseKey}.${countKey}`);
+        debug(`Override ${modelGender}.${caseKey}.${countKey} to ${genderOverride}.${caseOverride || caseKey}.${countKey}`);
 
         const newValue = adjective[genderOverride][caseOverride || caseKey][countKey];
 

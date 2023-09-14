@@ -1,4 +1,5 @@
 // @ts-nocheck TODO: Fix types
+import debugFactory from 'debug';
 import {
   WordDefinition,
   Noun,
@@ -16,6 +17,7 @@ import adjectives from './adjectives';
 import { applyModel } from './models';
 import templates from './templates.ts';
 
+const debug = debugFactory('app:generateSlogan');
 const ADJECTIVE_CHANCE = 0.5;
 
 function capitalize(str: string): string {
@@ -84,18 +86,18 @@ function formatNoun(noun: Noun, adjectives: Adjective[], { caseKey, countKey }: 
   const _caseKey: Case = caseKey || "nominative";
   const _countKey: Count = countKey || getRandomItem(["singular", "plural"]);
 
-  console.log('==getNoun==');
-  console.log("noun word: ", noun.word);
-  console.log("gender: ", noun.gender);
-  console.log("model: ", noun.model);
-  console.log("caseKey: ", _caseKey);
-  console.log("customCaseKey: ", caseKey);
-  console.log("countKey: ", _countKey);
-  console.log("customCountKey: ", countKey);
+  debug('==getNoun==');
+  debug("noun word: ", noun.word);
+  debug("gender: ", noun.gender);
+  debug("model: ", noun.model);
+  debug("caseKey: ", _caseKey);
+  debug("customCaseKey: ", caseKey);
+  debug("countKey: ", _countKey);
+  debug("customCountKey: ", countKey);
 
   const cases = noun.cases;
   const word = cases[_caseKey][_countKey];
-  console.log("word: ", word);
+  debug("word: ", word);
 
 
   // Get adjective
@@ -121,16 +123,16 @@ function formatVerb(verb: Verb, { personKey, countKey }: FormattingConfig, isFir
   const _personKey: Person = personKey || getRandomItem(["firstPerson", "secondPerson", "thirdPerson"]);
   const _countKey: Count = countKey || getRandomItem(["singular", "plural"]);
 
-  console.log('==getVerb==');
-  console.log("verb word: ", verb.word);
-  console.log("tenseKey: ", tenseKey);
-  console.log("personKey: ", _personKey);
-  console.log("customPersonKey: ", personKey);
-  console.log("countKey: ", _countKey);
-  console.log("customCountKey: ", countKey);
+  debug('==getVerb==');
+  debug("verb word: ", verb.word);
+  debug("tenseKey: ", tenseKey);
+  debug("personKey: ", _personKey);
+  debug("customPersonKey: ", personKey);
+  debug("countKey: ", _countKey);
+  debug("customCountKey: ", countKey);
 
   const word = verb[tenseKey][_personKey][_countKey];
-  console.log("word: ", word);
+  debug("word: ", word);
 
   let value = word;
 
@@ -151,15 +153,15 @@ function formatVerb(verb: Verb, { personKey, countKey }: FormattingConfig, isFir
 }
 
 function formatAdjective(adjective: Adjective, { gender, caseKey, countKey }: FormattingConfig): FormattedWord {
-  console.log('==getAdjective==');
-  console.log("adjective word: ", adjective.word);
-  console.log("gender: ", gender);
-  console.log("caseKey: ", caseKey);
-  console.log("countKey: ", countKey);
+  debug('==getAdjective==');
+  debug("adjective word: ", adjective.word);
+  debug("gender: ", gender);
+  debug("caseKey: ", caseKey);
+  debug("countKey: ", countKey);
 
   const word = adjective[gender][caseKey][countKey];
 
-  console.log("word: ", word);
+  debug("word: ", word);
 
   return {
     word: adjective,
@@ -221,8 +223,8 @@ const getTemplateId = (template: TemplateDef | Template): string => {
 }
 
 function generateSentenceFromTemplate(getRandomWord: () => WordDefinition, template: Template) {
-  console.log('============');
-  console.log('==template: ', template.types.join('-'), '==');
+  debug('============');
+  debug('==template: ', template.types.join('-'), '==');
 
   const customWords = template.customWords.slice();
   const wordDefinitions: (WordDefinition & { templateWordType: TemplateWordType })[] = template.types.map((templateWordType) => {
@@ -281,14 +283,14 @@ function generateSentenceFromTemplate(getRandomWord: () => WordDefinition, templ
     const templateCaseKey = wordType === 'noun' ? cases.shift() : undefined;
     const templatePersonKeys = wordType === 'verb' ? persons.shift() : undefined;
 
-    console.log(`==Word: ${templateWordType}==`);
-    console.log('templateCaseKey', templateCaseKey);
-    console.log('templatePersonKeys', templatePersonKeys)
+    debug(`==Word: ${templateWordType}==`);
+    debug('templateCaseKey', templateCaseKey);
+    debug('templatePersonKeys', templatePersonKeys)
 
 
     const getCaseKey = () => {
       const connectedVerb = nextWordDef?.type === 'verb' ? nextWordDef : (previousWordDef?.type === 'verb' ? previousWordDef : undefined);
-      console.log('connectedVerb', connectedVerb?.word)
+      debug('connectedVerb', connectedVerb?.word)
 
       if (templateWordType === 'subject' && connectedVerb?.nounCase && !templateCaseKey) {
         if (connectedVerb) {

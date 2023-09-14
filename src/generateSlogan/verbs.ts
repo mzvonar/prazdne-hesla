@@ -330,6 +330,7 @@ const volitVerb: Verb = {
 const chranitVerb: Verb = {
   word: "chrániť",
   type: "verb",
+  subjectCase: 'accusative',
   present: {
     firstPerson: {
       singular: "chránim",

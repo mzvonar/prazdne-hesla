@@ -53,6 +53,7 @@ const stopVerb: Verb = {
 const zvysitVerb: Verb = {
   word: "zvýšiť",
   type: "verb",
+  subjectCase: 'accusative',
   present: {
     firstPerson: {
       singular: "zvýšim",

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import generateSlogan from './generateSlogan';
 import RefreshIcon from './RefreshIcon.tsx';
-import generateBillboard from './generateBillboard';
+import generateBillboard, { avatars } from './generateBillboard';
 import './App.css';
 
 const MAX_WIDTH = 1000;
@@ -18,6 +18,19 @@ const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 function getImageAsBase64(canvas: HTMLCanvasElement) {
   // Convert the canvas to a data URL (base64)
   return canvas.toDataURL('image/jpeg',  1.0);
+}
+
+function preloadImages(imageUrls: string[]) {
+  setTimeout(() => {
+    imageUrls.map((url) => {
+      return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+        image.src = `avatars/${url}`;
+      });
+    })
+  }, 3000);
 }
 
 async function uploadImage(token: string, imageBase64: string) {
@@ -142,6 +155,8 @@ function App() {
     if(START_WITH_PLACEHOLDER || !ALLOW_PHOTO_UPLOAD) {
       handleGenerateBillboard()
     }
+
+    preloadImages(avatars);
   }, []);
 
   useEffect(() => {

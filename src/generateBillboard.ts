@@ -502,7 +502,7 @@ const getSloganFontSize = (slogan: string) => {
   }
 };
 
-const avatars = [
+export const avatars = [
   '01_01.png',
   '02_01.png',
   '03_01.png',

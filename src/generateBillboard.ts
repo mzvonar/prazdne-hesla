@@ -17,7 +17,7 @@ function getRandomRange(from: number, to: number): number {
 }
 
 let boundRectIndex = 0;
-const drawBoundingBox = (ctx, x, y, width, height) => {
+const drawBoundingBox = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number) => {
   const colors = [
     '#f00',
     '#0f0',
@@ -77,6 +77,10 @@ function generateRandomComplementaryColorPalette(
 
 const drawPalette = (canvas: HTMLCanvasElement, palette: ColorPalette) => {
   const ctx = canvas.getContext('2d');
+
+  if (!ctx) {
+    throw new Error("Canvas 2D context not supported.");
+  }
 
   ctx.fillStyle = palette.background;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -247,6 +251,10 @@ function renderTextsOnCanvas(
 
   // Function to measure the total width of text lines
   function getTotalLineWidth(lines: string[], font: string, fontSize: number, fontWeight: string): number {
+    if (!ctx) {
+      throw new Error("Canvas 2D context not supported.");
+    }
+
     let maxWidth = 0;
     ctx.font = `${fontWeight} ${fontSize}px ${font}`;
     for (const line of lines) {
@@ -258,6 +266,10 @@ function renderTextsOnCanvas(
 
   // Function to wrap text into lines
   function wrapText(text: string, font: string, fontWeight: string, fontSize: number, maxWidth: number): string[] {
+    if (!ctx) {
+      throw new Error("Canvas 2D context not supported.");
+    }
+
     ctx.font = `${fontWeight} ${fontSize}px ${font}`;
     const words = text.split(' ');
     const lines: string[] = [];

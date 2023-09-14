@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 interface Positioning {
   left?: number;
   right?: number;

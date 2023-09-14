@@ -193,6 +193,7 @@ const otupjievatVerb: Verb = {
 const upratatVerb: Verb = {
   word: 'upratať',
   type: 'verb',
+  subjectCase: 'accusative',
   present: {
     firstPerson: {
       singular: 'upratujem',

@@ -327,6 +327,39 @@ const volitVerb: Verb = {
   },
 };
 
+const chranitVerb: Verb = {
+  word: "chrániť",
+  type: "verb",
+  present: {
+    firstPerson: {
+      singular: "chránim",
+      plural: "chránime",
+    },
+    secondPerson: {
+      singular: "chrániš",
+      plural: "chránite",
+    },
+    thirdPerson: {
+      singular: "chráni",
+      plural: "chránia",
+    },
+  },
+  future: {
+    firstPerson: {
+      singular: "ochránim",
+      plural: "ochránime",
+    },
+    secondPerson: {
+      singular: "ochrániš",
+      plural: "ochránite",
+    },
+    thirdPerson: {
+      singular: "ochráni",
+      plural: "ochránia",
+    },
+  },
+};
+
 const verbs: Verb[] = [
   zabranitVerb,
   zastavitVerb,
@@ -339,6 +372,7 @@ const verbs: Verb[] = [
   rozkradnutVerb,
   nepredatVerb,
   volitVerb,
+  chranitVerb,
 ];
 
 export default verbs;

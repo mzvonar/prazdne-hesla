@@ -1524,6 +1524,172 @@ const zapredanyAdjective: Adjective = {
   },
 };
 
+const lacnejsiAdjective: Adjective = {
+  word: "lacnejší",
+  type: "adjective",
+  masculine: {
+    nominative: {
+      singular: "lacnejší",
+      plural: "lacnejší",
+    },
+    genitive: {
+      singular: "lacnejšieho",
+      plural: "lacnejších",
+    },
+    dative: {
+      singular: "lacnejšiemu",
+      plural: "lacnejším",
+    },
+    accusative: {
+      singular: "lacnejšieho",
+      plural: "lacnejších",
+    },
+    locative: {
+      singular: "lacnejšom",
+      plural: "lacnejších",
+    },
+    instrumental: {
+      singular: "lacnejším",
+      plural: "lacnejšími",
+    },
+  },
+  feminine: {
+    nominative: {
+      singular: "lacnejšia",
+      plural: "lacnejšie",
+    },
+    genitive: {
+      singular: "lacnejšej",
+      plural: "lacnejších",
+    },
+    dative: {
+      singular: "lacnejšej",
+      plural: "lacnejším",
+    },
+    accusative: {
+      singular: "lacnejšiu",
+      plural: "lacnejšie",
+    },
+    locative: {
+      singular: "lacnejšej",
+      plural: "lacnejších",
+    },
+    instrumental: {
+      singular: "lacnejšou",
+      plural: "lacnejšími",
+    },
+  },
+  neuter: {
+    nominative: {
+      singular: "lacnejšie",
+      plural: "lacnejšie",
+    },
+    genitive: {
+      singular: "lacnejšieho",
+      plural: "lacnejších",
+    },
+    dative: {
+      singular: "lacnejšiemu",
+      plural: "lacnejším",
+    },
+    accusative: {
+      singular: "lacnejšie",
+      plural: "lacnejšie",
+    },
+    locative: {
+      singular: "lacnejšom",
+      plural: "lacnejších",
+    },
+    instrumental: {
+      singular: "lacnejším",
+      plural: "lacnejšími",
+    },
+  },
+};
+
+const dostojnyAdjective: Adjective = {
+  word: "dôstojny",
+  type: "adjective",
+  masculine: {
+    nominative: {
+      singular: "dôstojný",
+      plural: "dôstojní",
+    },
+    genitive: {
+      singular: "dôstojného",
+      plural: "dôstojných",
+    },
+    dative: {
+      singular: "dôstojnému",
+      plural: "dôstojným",
+    },
+    accusative: {
+      singular: "dôstojného",
+      plural: "dôstojných",
+    },
+    locative: {
+      singular: "dôstojnom",
+      plural: "dôstojných",
+    },
+    instrumental: {
+      singular: "dôstojným",
+      plural: "dôstojnými",
+    },
+  },
+  feminine: {
+    nominative: {
+      singular: "dôstojná",
+      plural: "dôstojné",
+    },
+    genitive: {
+      singular: "dôstojnej",
+      plural: "dôstojných",
+    },
+    dative: {
+      singular: "dôstojnej",
+      plural: "dôstojným",
+    },
+    accusative: {
+      singular: "dôstojnú",
+      plural: "dôstojné",
+    },
+    locative: {
+      singular: "dôstojnej",
+      plural: "dôstojných",
+    },
+    instrumental: {
+      singular: "dôstojnou",
+      plural: "dôstojnými",
+    },
+  },
+  neuter: {
+    nominative: {
+      singular: "dôstojné",
+      plural: "dôstojné",
+    },
+    genitive: {
+      singular: "dôstojného",
+      plural: "dôstojných",
+    },
+    dative: {
+      singular: "dôstojnému",
+      plural: "dôstojným",
+    },
+    accusative: {
+      singular: "dôstojné",
+      plural: "dôstojné",
+    },
+    locative: {
+      singular: "dôstojnom",
+      plural: "dôstojných",
+    },
+    instrumental: {
+      singular: "dôstojným",
+      plural: "dôstojnými",
+    },
+  },
+};
+
 const adjectives: Adjective[] = [
   liberalnyAdjective,
   krasnyAdjective,
@@ -1544,6 +1710,8 @@ const adjectives: Adjective[] = [
   silnyAdjective,
   trinastyAdjective,
   zapredanyAdjective,
+  lacnejsiAdjective,
+  dostojnyAdjective,
 ];
 
 export default adjectives;

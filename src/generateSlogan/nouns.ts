@@ -554,6 +554,71 @@ const bordelNoun: Noun = {
   },
 };
 
+const mierNoun: Noun = {
+  word: "mier",
+  type: "noun",
+  gender: "masculine",
+  model: 'dub',
+  cases: {
+    nominative: {
+      singular: "mier",
+      plural: "miery",
+    },
+    genitive: {
+      singular: "mieru",
+      plural: "mierov",
+    },
+    dative: {
+      singular: "mieru",
+      plural: "mierom",
+    },
+    accusative: {
+      singular: "mier",
+      plural: "miery",
+    },
+    locative: {
+      singular: "mieri",
+      plural: "mieroch",
+    },
+    instrumental: {
+      singular: "mierom",
+      plural: "miermi",
+    },
+  },
+};
+
+const istotaNoun: Noun = {
+  word: "istota",
+  type: "noun",
+  gender: "feminine",
+  cases: {
+    nominative: {
+      singular: "istota",
+      plural: "istoty",
+    },
+    genitive: {
+      singular: "istoty",
+      plural: "istôt",
+    },
+    dative: {
+      singular: "istote",
+      plural: "istotám",
+    },
+    accusative: {
+      singular: "istotu",
+      plural: "istoty",
+    },
+    locative: {
+      singular: "istote",
+      plural: "istotách",
+    },
+    instrumental: {
+      singular: "istotou",
+      plural: "istotami",
+    },
+  },
+};
+
 
 const nouns: Noun[] = [
   stromNoun,
@@ -578,6 +643,8 @@ const nouns: Noun[] = [
   clovekNoun,
   spalovaciMotorNoun,
   bordelNoun,
+  mierNoun,
+  istotaNoun,
 ];
 
 export default nouns;

@@ -542,7 +542,7 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
   const photoRatio = pickRandom([1/3, 2/5, 1/2]);
   const photoWidth = Math.round(canvas.width * photoRatio);
   const photoIsSmall = photoWidth <= Math.round(canvas.width / 3);
-  const imageHorizontalAlign = (photoIsSmall && !isCustomImage) ? 'left' : 'center';
+  const imageHorizontalAlign = 'center'//(photoIsSmall && !isCustomImage) ? 'left' : 'center';
   const imageVerticalAlign = isCustomImage ? 'middle' : 'bottom';
 
   renderImageInCanvas(canvas, image, 0, 0, photoWidth, canvas.height, imageHorizontalAlign, imageVerticalAlign, isCustomImage ? 30 : 0);

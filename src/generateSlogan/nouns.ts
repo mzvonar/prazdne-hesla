@@ -8,7 +8,7 @@ const stromNoun: Noun = {
   model: 'dub',
   cases: {
     nominative: { singular: "strom", plural: "stromy" },
-    genitive: { singular: "strom", plural: "stromy" },
+    genitive: { singular: "stromu", plural: "stromov" },
     dative: { singular: "stromu", plural: "stromom" },
     accusative: { singular: "strom", plural: "stromy" },
     locative: { singular: "strome", plural: "stromoch" },
@@ -56,7 +56,7 @@ const sportNoun: Noun = {
     dative: { singular: "športu", plural: "športom" },
     accusative: { singular: "šport", plural: "športy" },
     locative: { singular: "športe", plural: "športoch" },
-    instrumental: { singular: "športom", plural: "športmi" },
+    instrumental: { singular: "športom", plural: "športami" },
   },
 };
 
@@ -65,7 +65,7 @@ const dochodcaNoun: Noun = {
   type: "noun",
   gender: "masculine",
   cases: {
-    nominative: { singular: "dôchodca", plural: "dôchodcovia" },
+    nominative: { singular: "dôchodca", plural: "dôchodci" },
     genitive: { singular: "dôchodcu", plural: "dôchodcov" },
     dative: { singular: "dôchodcovi", plural: "dôchodcom" },
     accusative: { singular: "dôchodcu", plural: "dôchodcov" },
@@ -146,7 +146,7 @@ const sorosNoun: Noun = {
     dative: { singular: "Sorošovi", plural: "Sorošom" },
     accusative: { singular: "Soroša", plural: "Sorošov" },
     locative: { singular: "Sorošovi", plural: "Sorošoch" },
-    instrumental: { singular: "Sorošom", plural: "Sorošami" },
+    instrumental: { singular: "Sorošom", plural: "Sorošmi" },
   },
 };
 
@@ -175,7 +175,7 @@ const narodNoun: Noun = {
       plural: "národy",
     },
     genitive: {
-      singular: "národu",
+      singular: "národa",
       plural: "národov",
     },
     dative: {

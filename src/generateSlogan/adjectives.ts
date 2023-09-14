@@ -1152,7 +1152,7 @@ const drahyAdjective: Adjective = {
       plural: "drahým",
     },
     accusative: {
-      singular: "drahu",
+      singular: "drahú",
       plural: "drahé",
     },
     locative: {
@@ -1364,7 +1364,7 @@ const trinastyAdjective: Adjective = {
   masculine: {
     nominative: {
       singular: 'trinásty',
-      plural: 'trinásti',
+      plural: 'trinásty',
     },
     genitive: {
       singular: 'trinásteho',
@@ -1376,15 +1376,15 @@ const trinastyAdjective: Adjective = {
     },
     accusative: {
       singular: 'trinásteho',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     locative: {
       singular: 'trinástom',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     instrumental: {
       singular: 'trinástym',
-      plural: 'trinástimi',
+      plural: 'trinástymi',
     },
   },
   feminine: {
@@ -1394,11 +1394,11 @@ const trinastyAdjective: Adjective = {
     },
     genitive: {
       singular: 'trinástej',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     dative: {
       singular: 'trinástej',
-      plural: 'trinástim',
+      plural: 'trinástym',
     },
     accusative: {
       singular: 'trinástu',
@@ -1406,11 +1406,11 @@ const trinastyAdjective: Adjective = {
     },
     locative: {
       singular: 'trinástej',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     instrumental: {
       singular: 'trinástou',
-      plural: 'trinástimi',
+      plural: 'trinástymi',
     },
   },
   neuter: {
@@ -1420,11 +1420,11 @@ const trinastyAdjective: Adjective = {
     },
     genitive: {
       singular: 'trinásteho',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     dative: {
       singular: 'trinástemu',
-      plural: 'trinástim',
+      plural: 'trinástym',
     },
     accusative: {
       singular: 'trináste',
@@ -1432,7 +1432,7 @@ const trinastyAdjective: Adjective = {
     },
     locative: {
       singular: 'trinástom',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     instrumental: {
       singular: 'trinástym',

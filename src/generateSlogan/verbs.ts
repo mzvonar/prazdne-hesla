@@ -9,13 +9,13 @@ const zabranitVerb: Verb = {
   subjectCase: 'dative',
   present: {
     firstPerson: { singular: "zabránim", plural: "zabránime" },
-    secondPerson: { singular: "zabrániš", plural: "zabránište" },
+    secondPerson: { singular: "zabrániš", plural: "zabránite" },
     thirdPerson: { singular: "zabráni", plural: "zabránia" },
   },
   future: {
     firstPerson: { singular: "zabránim", plural: "zabránime" },
     secondPerson: { singular: "zabránis", plural: "zabránite" },
-    thirdPerson: { singular: "zabrání", plural: "zabránia" },
+    thirdPerson: { singular: "zabráni", plural: "zabránia" },
   },
 };
 
@@ -164,15 +164,15 @@ const otupjievatVerb: Verb = {
   subjectCase: "accusative",
   present: {
     firstPerson: {
-      singular: "otupjievam",
-      plural: "otupjievame",
+      singular: "otupjievjam",
+      plural: "otupjievjame",
     },
     secondPerson: {
-      singular: "otupjievaš",
-      plural: "otupjievate",
+      singular: "otupjievjaš",
+      plural: "otupjievjate",
     },
     thirdPerson: {
-      singular: "otupjieva",
+      singular: "otupjievja",
       plural: "otupjievjajú",
     },
   },
@@ -293,6 +293,40 @@ const nepredatVerb: Verb = {
   },
 };
 
+const volitVerb: Verb = {
+  word: "voliť",
+  type: "verb",
+  subjectCase: 'accusative',
+  present: {
+    firstPerson: {
+      singular: "volím",
+      plural: "volíme",
+    },
+    secondPerson: {
+      singular: "volíš",
+      plural: "volíte",
+    },
+    thirdPerson: {
+      singular: "volí",
+      plural: "volia",
+    },
+  },
+  future: {
+    firstPerson: {
+      singular: "volím",
+      plural: "volíme",
+    },
+    secondPerson: {
+      singular: "volíš",
+      plural: "volíte",
+    },
+    thirdPerson: {
+      singular: "volí",
+      plural: "volia",
+    },
+  },
+};
+
 const verbs: Verb[] = [
   zabranitVerb,
   zastavitVerb,
@@ -304,6 +338,7 @@ const verbs: Verb[] = [
   upratatVerb,
   rozkradnutVerb,
   nepredatVerb,
+  volitVerb,
 ];
 
 export default verbs;

@@ -1,7 +1,5 @@
 import { Verb } from './types';
 
-
-
 const zabranitVerb: Verb = {
   word: "zabrániť",
   type: "verb",

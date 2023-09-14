@@ -100,6 +100,7 @@ function renderImageInCanvas(
   width: number,
   height: number,
   verticalAlign: VerticalAlignment = 'bottom',
+  horizontalPadding = 0
 ): void {
   const ctx = canvas.getContext('2d');
 
@@ -110,9 +111,10 @@ function renderImageInCanvas(
   // Calculate the aspect ratio of the image
   const aspectRatio = image.width / image.height;
 
+  const paddedWidth = width - (horizontalPadding * 2);
   // Calculate the scaled dimensions to fit within the bounding box
-  let scaledWidth = width;
-  let scaledHeight = width / aspectRatio;
+  let scaledWidth = paddedWidth;
+  let scaledHeight = paddedWidth / aspectRatio;
 
   if (scaledHeight > height) {
     scaledHeight = height;
@@ -120,7 +122,8 @@ function renderImageInCanvas(
   }
 
   // Calculate the position to center the image within the bounding box
-  const offsetX = x + (width - scaledWidth) / 2;
+  const offsetX = x + (paddedWidth - scaledWidth) / 2 + horizontalPadding;
+
 
   let offsetY: number;
   if(verticalAlign == 'bottom') {
@@ -524,7 +527,7 @@ const avatars = [
   '15_02.png',
 ];
 
-const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageElement, slogan: string, subheader: string) => {
+const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageElement, slogan: string, subheader: string, isCustomImage = false) => {
   const isDark = getRandomBool();
   const palette = generateRandomComplementaryColorPalette(isDark);
 
@@ -534,7 +537,7 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
   const photoRatio = pickRandom([1/3, 2/5, 1/2]);
   const photoWidth = Math.round(canvas.width * photoRatio);
 
-  renderImageInCanvas(canvas, image, 0, 0, photoWidth, canvas.height);
+  renderImageInCanvas(canvas, image, 0, 0, photoWidth, canvas.height, isCustomImage ? 'middle' : 'bottom', isCustomImage ? 30 : 0);
 
   const sloganIsLong = slogan.length > 25;
   const horizontalAlignment: HorizontalAlignment = pickRandom(['left', 'left', 'right']);
@@ -585,7 +588,7 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
 
 const generateBillboard = (canvas: HTMLCanvasElement, userImage: HTMLImageElement | null, slogan: string, subheader: string) => {
   if(userImage) {
-    generateBillboardForImage(canvas, userImage, slogan, subheader);
+    generateBillboardForImage(canvas, userImage, slogan, subheader, true);
   }
   else {
     const avatar = pickRandom(avatars);

@@ -17,6 +17,7 @@ const MAX_HEIGHT = 500;
 
 const ALLOW_PHOTO_UPLOAD = import.meta.env.VITE_ALLOW_PHOTO_UPLOAD === 'true';
 const START_WITH_PLACEHOLDER = import.meta.env.VITE_START_WITH_PLACEHOLDER === 'true';
+const ALLOW_SHARE = import.meta.env.VITE_ALLOW_SHARE === 'true';
 const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 
 function getImageAsBase64(canvas: HTMLCanvasElement) {
@@ -225,7 +226,7 @@ function App() {
           </button>
         }
 
-        {hasImage &&
+        {hasImage && ALLOW_SHARE &&
           <button id="share-fb-button" className="primary" onClick={handleFacebookShare}>
             <span className="icon">
               <FacebookIcon />

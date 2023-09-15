@@ -6,6 +6,7 @@ import getImageSize from 'image-size';
 
 const RECAPTCHA_SECRET = process.env.GOOGLE_RECAPTCHA_SECRET;
 const IMAGE_CDN_FOLDER = process.env.VITE_IMAGE_CDN_FOLDER || 'prod';
+const ALLOW_SHARE = process.env.VITE_ALLOW_SHARE === 'true';
 
 const WIDTH = 1000;
 const HEIGHT = 500;
@@ -29,7 +30,7 @@ function checkImageDimensions(imageBase64: string) {
 
 export const handler: Handler = async (event: HandlerEvent) => {
   try {
-    if(!event.body) {
+    if(!event.body || !ALLOW_SHARE) {
       return {
         statusCode: 400,
         body: JSON.stringify({

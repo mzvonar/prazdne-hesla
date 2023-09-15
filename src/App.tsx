@@ -135,7 +135,7 @@ function App() {
         }
         catch(e) {
           console.error(e);
-          toast.error("Ľutujeme, ale nastala chyba");
+          toast.error("Ľutujeme, ale nastala protislovenská chyba");
           setImageIsSaving(false);
         }
       });

@@ -1,7 +1,9 @@
 import tinycolor from 'tinycolor2';
+import debugFactory from 'debug';
 import { getRandomBool, pickRandom } from './utils.ts';
 import fonts, { openSansFont, FontDef } from './fonts.ts';
 
+const debug = debugFactory('app:generateBillboard');
 
 interface ColorPalette {
   primary: string;
@@ -541,6 +543,10 @@ interface FontConfig {
 const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageElement, fonts: FontConfig, slogan: string, subheader: string, isCustomImage = false) => {
   const isDark = getRandomBool();
   const palette = generateRandomComplementaryColorPalette(isDark);
+
+  debug('isDark: ', isDark);
+  debug('palette: ', palette);
+  debug('fonts: ', fonts);
 
   // drawPalette(canvas, palette);
   renderBackground(canvas, palette);

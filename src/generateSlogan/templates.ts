@@ -59,12 +59,18 @@ const templates: TemplateDef[] = [
     counts: [null, null, 'singular'],
     customWords: [modifiers],
   },
-
-  // {
-  //   types: ["modifier", "subject", "verb"],
-  //   cases: ["nominative"],
-  //   persons: [['firstPerson']],
-  // },
+  {
+    types: ["subject", "custom"],
+    cases: ["nominative"],
+    customWords: [['!', '?', '...']],
+    removeLastSpace: true,
+  },
+  {
+    types: ["object", "custom", "subject"],
+    cases: ["dative", "accusative"],
+    counts: [null, 'singular'],
+    customWords: [modifiers],
+  },
 ];
 
 export default templates;

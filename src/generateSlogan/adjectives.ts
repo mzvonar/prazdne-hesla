@@ -83,8 +83,7 @@ const liberalnyAdjective: Adjective = {
   },
 };
 
-const krasnyAdjective: Adjective = 
-  {
+const krasnyAdjective: Adjective = {
     word: "krásny", // Replace with the desired Slovak adjective
     type: "adjective",
     masculine: {
@@ -1368,11 +1367,11 @@ const trinastyAdjective: Adjective = {
     },
     genitive: {
       singular: 'trinásteho',
-      plural: 'trinástich',
+      plural: 'trinástych',
     },
     dative: {
       singular: 'trinástemu',
-      plural: 'trinástim',
+      plural: 'trinástym',
     },
     accusative: {
       singular: 'trinásteho',

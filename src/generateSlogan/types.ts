@@ -79,7 +79,7 @@ export interface FormattedWord extends FormattingConfig {
   word: WordDefinition;
 }
 
-export type TemplateWordType = 
+export type TemplateWordType =
   | "subject"
   | "object"
   | "verb"
@@ -92,6 +92,7 @@ export interface TemplateDef {
   persons?: Person[][];
   counts?: (Count | null)[];
   customWords?: (string | WordDefinition)[][];
+  removeLastSpace?: boolean;
 }
 
 export interface Template {
@@ -100,4 +101,5 @@ export interface Template {
   persons: Person[][];
   counts: (Count | null)[];
   customWords: (string | WordDefinition)[][];
+  removeLastSpace?: boolean;
 }

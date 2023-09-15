@@ -222,6 +222,15 @@ const getTemplateId = (template: TemplateDef | Template): string => {
   return template.types.join('-');
 }
 
+const removeLastSpace = (str: string): string => {
+  const words = str.split(' ');
+
+  return [
+    ...words.slice(0, -2),
+    words.slice(-2).join('')
+  ].join(' ');
+}
+
 function generateSentenceFromTemplate(getRandomWord: () => WordDefinition, template: Template) {
   debug('============');
   debug('==template: ', template.types.join('-'), '==');
@@ -342,7 +351,9 @@ function generateSentenceFromTemplate(getRandomWord: () => WordDefinition, templ
     .map((word) => word.value)
     .join(' ');
 
-  return capitalize(sentence);
+  const capitalized =  capitalize(sentence);
+
+  return template.removeLastSpace ? removeLastSpace(capitalized) : capitalized;
 }
 
 function generateSentence(
@@ -375,6 +386,6 @@ export default () => {
 //   const sentence = generateSentence(nouns, verbs, adjectives);
 //   console.log(`Generated Sentence: ${sentence}`);
 // } catch (error) {
-//  // console.error(error.message);
+//   // console.error(error.message);
 //   throw error;
 // }

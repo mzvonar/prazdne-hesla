@@ -3,10 +3,14 @@ import axios from 'axios';
 // import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { loadFonts } from './fonts.ts';
 import generateSlogan from './generateSlogan';
-import RefreshIcon from './RefreshIcon.tsx';
-import generateBillboard, { avatars } from './generateBillboard';
+import RefreshIcon from './RefreshIcon.jsx';
+import TrashIcon from './TrashIcon.jsx';
+import FacebookIcon from './FacebookIcon.tsx';
+import { avatars } from './generateBillboard';
 import './App.css';
+import Billboard from './Billboard.jsx';
 
 const MAX_WIDTH = 1000;
 const MAX_HEIGHT = 500;
@@ -43,7 +47,9 @@ async function uploadImage(token: string, imageBase64: string) {
 }
 
 function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [userImage, setUserImage] = useState<HTMLImageElement | null>(null);
+  const [slogan, setSlogan] = useState<string>(generateSlogan);
   const [imageIsSaving, setImageIsSaving] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const uploadButtonRef = useRef<HTMLButtonElement>(null);
@@ -79,22 +85,17 @@ function App() {
     }
   };
 
+  const handleRemoveUserImage = (e: MouseEvent) => {
+    e.preventDefault();
+
+    setUserImage(null);
+  }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleGenerateBillboard = () => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
+    const slogan = generateSlogan();
 
-    if (canvas && context) {
-      const slogan = generateSlogan();
-
-      canvas.width = MAX_WIDTH;
-      canvas.height = MAX_HEIGHT;
-      canvas.dataset.slogan = slogan;
-
-      generateBillboard(canvas, userImage, slogan, 'Generujem billboardy na prazdnehesla.sk');
-
-      return;
-    }
+    setSlogan(slogan);
   };
 
 
@@ -152,18 +153,10 @@ function App() {
   };
 
   useEffect(() => {
-    if(START_WITH_PLACEHOLDER || !ALLOW_PHOTO_UPLOAD) {
-      handleGenerateBillboard()
-    }
-
     preloadImages(avatars);
-  }, []);
 
-  useEffect(() => {
-    if(userImage) {
-      handleGenerateBillboard();
-    }
-  }, [handleGenerateBillboard, userImage]);
+    loadFonts().then(() => setFontsLoaded(true));
+  }, []);
 
   return (
     <div className="App">
@@ -179,52 +172,71 @@ function App() {
         </div>
       }
 
-      {hasImage && (
-        <div className="canvas-container">
-          <canvas id="slogan-canvas" ref={canvasRef} width={MAX_WIDTH} height={MAX_HEIGHT}></canvas>
-        </div>
-      )}
+      {hasImage && slogan && fontsLoaded &&
+        <Billboard
+          canvasRef={canvasRef}
+          slogan={slogan}
+          subheader="Generujem billboardy na prazdnehesla.sk"
+          width={MAX_WIDTH}
+          height={MAX_HEIGHT}
+          userImage={userImage}
+        />
+      }
+
+
+      <div className="bottom-buttons">
+        {hasImage &&
+          <button className="secondary" onClick={handleGenerateBillboard}>
+              <span className="icon refresh-icon">
+                <RefreshIcon />
+              </span>
+            Vygeneruj nový billboard
+          </button>
+        }
+
+        {ALLOW_PHOTO_UPLOAD &&
+          <div className="upload-btn-wrapper">
+            <button id="upload-button" ref={uploadButtonRef} className={!hasImage ? 'primary' : ''} onClick={handleUploadClick}>
+              {userImage ? 'Nahraj inú fotku' : 'Nahraj svoju fotku'}
+            </button>
+
+            {/*<span>Žiadna fotka nevybraná</span>*/}
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              title="Nahraj svoju fotku"
+              onChange={handleImageUpload}
+            />
+
+            {userImage &&
+              <button className="outline-danger delete-user-image-button" onClick={handleRemoveUserImage}>
+                <span className="icon">
+                  <TrashIcon />
+                </span>
+              </button>
+            }
+          </div>
+        }
+
+        {hasImage &&
+          <button id="save-image-button" onClick={handleDownloadImage}>
+            Uložiť ako obrázok
+          </button>
+        }
+
+        {hasImage &&
+          <button id="share-fb-button" className="primary" onClick={handleFacebookShare}>
+            <span className="icon">
+              <FacebookIcon />
+            </span>
+            {imageIsSaving ? 'Pracujem...' : 'Zdieľať billboard na Facebooku'}
+          </button>
+        }
+      </div>
 
       {hasImage &&
         <>
-          <div className="bottom-buttons">
-            {hasImage &&
-              <button className="secondary" onClick={handleGenerateBillboard}>
-            <span className="icon refresh-icon">
-              <RefreshIcon />
-            </span>
-                Vygeneruj nový billboard
-              </button>
-            }
-
-
-
-            <button id="share-fb-button" className="primary" onClick={handleFacebookShare}>
-              {imageIsSaving ? 'Pracujem...' : 'Zdieľať billboard na Facebooku'}
-            </button>
-
-            <button id="save-image-button" onClick={handleDownloadImage}>
-              Uložiť ako obrázok
-            </button>
-
-            {ALLOW_PHOTO_UPLOAD &&
-              <div className="upload-btn-wrapper">
-                <button ref={uploadButtonRef} className={!hasImage ? 'primary' : ''} onClick={handleUploadClick}>
-                  {userImage ? 'Nahraj inú fotku' : 'Nahraj svoju fotku'}
-                </button>
-
-                {/*<span>Žiadna fotka nevybraná</span>*/}
-                <input
-                  ref={inputRef}
-                  type="file"
-                  accept="image/*"
-                  title="Nahraj svoju fotku"
-                  onChange={handleImageUpload}
-                />
-              </div>
-            }
-          </div>
-
           <p>
             <strong>Voľte s rozumom!</strong> Je celkom ľahké náhodne vygenerovať prázdny politický slogan. Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />
             <strong>Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.</strong>

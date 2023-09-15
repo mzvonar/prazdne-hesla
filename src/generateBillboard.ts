@@ -1,5 +1,7 @@
 import tinycolor from 'tinycolor2';
 import { getRandomBool, pickRandom } from './utils.ts';
+import fonts, { openSansFont, FontDef } from './fonts.ts';
+
 
 interface ColorPalette {
   primary: string;
@@ -461,7 +463,7 @@ const renderBackground = (canvas: HTMLCanvasElement, palette: ColorPalette) => {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 };
 
-const renderVolte = (canvas: HTMLCanvasElement, palette: ColorPalette, x: number, y: number, width: number, height: number, horizontalAlign: HorizontalAlignment, hasToBeAligned = false, hasToBeSnapped = false) => {
+const renderVolte = (canvas: HTMLCanvasElement, palette: ColorPalette, fontName: string, x: number, y: number, width: number, height: number, horizontalAlign: HorizontalAlignment, hasToBeAligned = false, hasToBeSnapped = false) => {
   const isAligned = hasToBeAligned ? true : getRandomBool();
   const verticalAlign = isAligned ? 'bottom' : 'top';
   const topPadding = isAligned ? 0 : 64;
@@ -477,7 +479,7 @@ const renderVolte = (canvas: HTMLCanvasElement, palette: ColorPalette, x: number
     horizontalAlign,
     verticalAlign,
     fontSize,
-    'Arial',
+    fontName,
     'bold',
     24,
     [
@@ -532,7 +534,12 @@ export const avatars = [
   '15_02.png',
 ];
 
-const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageElement, slogan: string, subheader: string, isCustomImage = false) => {
+interface FontConfig {
+  slogan: FontDef;
+  subheader: FontDef;
+}
+
+const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageElement, fonts: FontConfig, slogan: string, subheader: string, isCustomImage = false) => {
   const isDark = getRandomBool();
   const palette = generateRandomComplementaryColorPalette(isDark);
 
@@ -550,7 +557,6 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
   const sloganIsLong = slogan.length > 25;
   const horizontalAlignment: HorizontalAlignment = pickRandom(['left', 'left', 'right']);
   const textTopPadding = sloganIsLong ? 32: 64;
-  const sloganFont = 'Arial';
   const sloganSize = getSloganFontSize(slogan);
   const sloganWeight = 'bold';
   const sloganBottomPadding = 32;
@@ -560,9 +566,7 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
   const verticalPadding = 0;
 
   const subheaderSize = 20;
-  const subheaderFont = 'Arial';
   const subheaderWeight = 'normal';
-
 
   const x = photoWidth + horizontalPadding;
   const y = 90;
@@ -573,14 +577,14 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
     {
       text: slogan,
       fontSize: sloganSize,
-      font: sloganFont,
+      font: fonts.slogan.name,
       fontWeight: sloganWeight,
       color: palette.primary,
     },
     {
       text: subheader,
       fontSize: subheaderSize,
-      font: subheaderFont,
+      font: fonts.subheader.name,
       fontWeight: subheaderWeight,
       color: isDark ? '#fff' : '#000',
     }
@@ -590,24 +594,34 @@ const generateBillboardForImage = (canvas: HTMLCanvasElement, image: HTMLImageEl
   const volteHeight = canvas.height - volteY - verticalPadding;
   const hasToBeAligned = true; //angle !== 0;
 
-  renderVolte(canvas, palette, x, volteY, textWidth, volteHeight, horizontalAlignment, hasToBeAligned, sloganIsLong);
+  renderVolte(canvas, palette, fonts.slogan.name, x, volteY, textWidth, volteHeight, horizontalAlignment, hasToBeAligned, sloganIsLong);
 };
 
-const generateBillboard = (canvas: HTMLCanvasElement, userImage: HTMLImageElement | null, slogan: string, subheader: string) => {
-  if(userImage) {
-    generateBillboardForImage(canvas, userImage, slogan, subheader, true);
-  }
-  else {
-    const avatar = pickRandom(avatars);
+const loadImage = (src: string) => {
+  return new Promise<HTMLImageElement>((resolve) => {
+    const image = new Image();
 
-    const randomAvatarImage = new Image();
-
-    randomAvatarImage.onload = () => {
-      generateBillboardForImage(canvas, randomAvatarImage, slogan, subheader);
+    image.onload = () => {
+      resolve(image);
     };
 
-    randomAvatarImage.src = `/avatars/${avatar}`;
-  }
+    image.src =src;
+  })
+}
+
+const generateBillboard = async (canvas: HTMLCanvasElement, userImage: HTMLImageElement | null, slogan: string, subheader: string) => {
+  const isCustomImage = Boolean(userImage);
+  const avatar = pickRandom(avatars);
+  const image = userImage || await loadImage(`/avatars/${avatar}`);
+
+  const sloganFont = pickRandom(fonts);
+
+  const fontConfig = {
+    slogan: sloganFont,
+    subheader: openSansFont,
+  };
+
+  generateBillboardForImage(canvas, image, fontConfig, slogan, subheader, isCustomImage);
 };
 
 export default generateBillboard;

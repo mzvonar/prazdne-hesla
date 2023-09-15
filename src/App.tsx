@@ -122,12 +122,21 @@ function App() {
           const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
 
           // Open a new window with the Facebook share dialog
-          window.open(facebookShareUrl, 'Zdieľaj billboard na Facebooku', 'width=600,height=400');
+          //window.open(facebookShareUrl, 'Zdieľaj billboard na Facebooku', 'width=600,height=400');
+
+          const a = document.createElement("a");
+          document.body.appendChild(a);
+          a.style.display = "none";
+          a.href = facebookShareUrl;
+          //a.target = "_blank";
+          a.click();
+          document.body.removeChild(a);
+
           setImageIsSaving(false);
         }
         catch(e) {
           console.error(e);
-          toast.error("Ľutujeme, ale nastala chyba");
+          toast.error("Ľutujeme, ale nastala protislovenská chyba");
           setImageIsSaving(false);
         }
       });

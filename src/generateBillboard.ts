@@ -41,8 +41,8 @@ function generateRandomComplementaryColorPalette(
 ): ColorPalette {
   // Generate a random hue for the primary color
   const primaryHue = Math.floor(Math.random() * 360);
-  const primaryS = isDark ? getRandomRange(60, 70) : getRandomRange(70, 90);
-  const primaryL = isDark ? getRandomRange(50, 80) : getRandomRange(20, 40);
+  const primaryS = isDark ? getRandomRange(0.6, 0.7) : getRandomRange(0.7, 0.9);
+  const primaryL = isDark ? getRandomRange(0.5, 0.8) : getRandomRange(0.2, 0.4);
 
   // Calculate the complementary hue for the secondary color
   const secondaryHue = (primaryHue + 180) % 360;
@@ -51,21 +51,21 @@ function generateRandomComplementaryColorPalette(
   const primaryColor = tinycolor({ h: primaryHue, s: primaryS, l: primaryL }).toHexString();
   const secondaryColor = tinycolor({
     h: secondaryHue,
-    s: 50,
-    l: 60,
+    s: 0.5,
+    l: 0.6,
   }).toHexString();
 
   // Generate random background color based on the variant
   let backgroundColor: string;
   if(isDark) {
     // For dark variant, background has the hue of primary color and lightness is between 0-20%
-    const lightness = getRandomRange(0, 15);
+    const lightness = getRandomRange(0, 0.15);
     backgroundColor = tinycolor({ h: primaryHue, s: primaryS, l: lightness }).toHexString();
   }
   else {
     // For light variant, background is a random light color between 10-25% of primary color
-    const lightness = getRandomRange(80, 95);
-    backgroundColor = tinycolor({ h: primaryHue, s: 50, l: lightness }).toHexString();
+    const lightness = getRandomRange(0.8, 0.95);
+    backgroundColor = tinycolor({ h: primaryHue, s: 0.5, l: lightness }).toHexString();
   }
 
   return {

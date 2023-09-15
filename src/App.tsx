@@ -128,6 +128,7 @@ function App() {
           document.body.appendChild(a);
           a.style.display = "none";
           a.href = facebookShareUrl;
+          a.target = "_blank";
           a.click();
           document.body.removeChild(a);
 

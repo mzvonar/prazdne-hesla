@@ -59,9 +59,8 @@ function generateRandomComplementaryColorPalette(
   let backgroundColor: string;
   if(isDark) {
     // For dark variant, background has the hue of primary color and lightness is between 0-20%
-    // const lightness = getRandomRange(0, 15);
-    // backgroundColor = tinycolor({ h: primaryHue, s: 50, l: lightness }).toHexString();
-    backgroundColor = '#000';
+    const lightness = getRandomRange(0, 15);
+    backgroundColor = tinycolor({ h: primaryHue, s: primaryS, l: lightness }).toHexString();
   }
   else {
     // For light variant, background is a random light color between 10-25% of primary color

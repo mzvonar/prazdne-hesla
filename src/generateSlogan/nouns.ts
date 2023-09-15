@@ -504,7 +504,7 @@ const spalovaciMotorNoun: Noun = {
     },
     dative: {
       singular: "spaľovaciemu motoru",
-      plural: "spaľovacým motorom",
+      plural: "spaľovacím motorom",
     },
     accusative: {
       singular: "spaľovací motor",
@@ -512,11 +512,11 @@ const spalovaciMotorNoun: Noun = {
     },
     locative: {
       singular: "spaľovacom motore",
-      plural: "spaľovacých motoroch",
+      plural: "spaľovacích motoroch",
     },
     instrumental: {
-      singular: "spaľovacým motorom",
-      plural: "spaľovacými motormi",
+      singular: "spaľovacím motorom",
+      plural: "spaľovacími motormi",
     },
   },
 };

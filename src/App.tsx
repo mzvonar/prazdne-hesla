@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react';
 import axios from 'axios';
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loadFonts } from './fonts.ts';
@@ -252,11 +252,11 @@ function App() {
             <strong>Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.</strong>
           </p>
 
-          {/*<p>*/}
-          {/*  <Link to="/zasady-ochrany-osobnych-udajov">*/}
-          {/*    Zásady ochrany osobných údajov*/}
-          {/*  </Link>*/}
-          {/*</p>*/}
+          <p className="privacy-policy">
+            <Link to="/zasady-ochrany-osobnych-udajov">
+              Zásady ochrany osobných údajov
+            </Link>
+          </p>
         </>
       }
     </div>

@@ -32,14 +32,13 @@ function Slogan() {
   const urlToShare = new URL(`/slogan/${sloganId}`, window.location.origin);
   const encodedUrlToShare = encodeURIComponent(urlToShare.toString());
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
+  const shareData = {
+    title: "Prázdne heslá",
+    text: "Náhodný generátor prázdnych politických hesiel",
+    url: encodedUrlToShare,
+  };
 
   const handleShareClick = (e: MouseEvent) => {
-    const shareData = {
-      title: "Prázdne heslá",
-      text: "Náhodný generátor prázdnych politických hesiel",
-      url: encodedUrlToShare,
-    }
-
     if(canShare(shareData)) {
       e.preventDefault();
       navigator.share(shareData);
@@ -72,6 +71,7 @@ function Slogan() {
           ref={shareRef}
           link
           href={facebookShareUrl}
+          shareData={shareData}
           onClick={handleShareClick}
         />
       </div>

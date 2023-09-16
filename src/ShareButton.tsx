@@ -2,13 +2,20 @@ import React, { ButtonHTMLAttributes } from 'react';
 import FacebookIcon from './FacebookIcon.tsx';
 import { canShare } from './sharing.ts';
 
+const staticShareData = {
+  title: "Prázdne heslá",
+  text: "Náhodný generátor prázdnych politických hesiel",
+  url: window.location.href,
+};
+
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement>  {
   isSaving: boolean;
   link?: boolean;
+  shareData?: ShareData;
 }
 
-const ShareButton: React.FC<Props> = React.forwardRef<HTMLButtonElement, Props>(({ className, isSaving, link, ...props }, ref) => {
-  const _canShare = canShare();
+const ShareButton: React.FC<Props> = React.forwardRef<HTMLButtonElement, Props>(({ className, isSaving, link, shareData, ...props }, ref) => {
+  const _canShare = canShare(shareData || staticShareData);
 
   const title = _canShare ? 'Zdieľať billboard' : 'Zdieľať billboard na Facebooku';
 

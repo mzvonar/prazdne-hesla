@@ -56,20 +56,9 @@
   margin-right: 0.5em;
 }
 
-.bottom-buttons {
-  display: flex;
-  justify-content: space-evenly;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.bottom-buttons button {
-  margin-bottom: 20px;
-}
-
 #share-fb-button .icon svg {
-  vertical-align: top;
-  margin-top: 1px;
+  vertical-align: middle;
+  margin-top: -2px;
   margin-right: 4px;
 }
 
@@ -78,15 +67,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .bottom-buttons {
-    flex-direction: column;
-  }
-
-  .bottom-buttons button,
-  .bottom-buttons .button {
-    width: 100%;
-  }
-
   .upload-btn-wrapper {
     display: flex;
     width: 100%;
@@ -101,7 +81,7 @@
   }
 }
 
-.privacy-policy {
+.privacy-policy-link-container {
   font-size: 0.8em;
   margin-top: 40px;
 }

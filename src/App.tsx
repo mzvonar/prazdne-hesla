@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loadFonts } from './fonts.ts';
 import generateSlogan from './generateSlogan';
-import RefreshIcon from './RefreshIcon.jsx';
 import TrashIcon from './TrashIcon.jsx';
-import FacebookIcon from './FacebookIcon.tsx';
 import { avatars } from './generateBillboard';
 import './App.css';
 import Billboard from './Billboard.jsx';
+import GenerateButton from './GenerateButton.jsx';
+import ShareButton from './ShareButton.jsx';
 
 const MAX_WIDTH = 1000;
 const MAX_HEIGHT = 500;
@@ -48,6 +48,7 @@ async function uploadImage(token: string, imageBase64: string) {
 }
 
 function App() {
+  const navigate = useNavigate();
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [userImage, setUserImage] = useState<HTMLImageElement | null>(null);
   const [slogan, setSlogan] = useState<string>(generateSlogan);
@@ -89,6 +90,10 @@ function App() {
   const handleRemoveUserImage = (e: MouseEvent) => {
     e.preventDefault();
 
+    if(inputRef.current) {
+      inputRef.current.value = '';
+    }
+
     setUserImage(null);
   }
 
@@ -115,22 +120,24 @@ function App() {
 
           const  { imageName } = await uploadImage(token, imageDataURL);
 
-          const urlToShare = new URL(`/slogan/${imageName}`, window.location.origin);
-          const encodedUrlToShare = encodeURIComponent(urlToShare.toString());
+          // const urlToShare = new URL(`/slogan/${imageName}`, window.location.origin);
+          // const encodedUrlToShare = encodeURIComponent(urlToShare.toString());
 
           // Create the Facebook share URL
-          const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
+          // const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
 
           // Open a new window with the Facebook share dialog
           //window.open(facebookShareUrl, 'Zdieľaj billboard na Facebooku', 'width=600,height=400');
 
-          const a = document.createElement("a");
-          document.body.appendChild(a);
-          a.style.display = "none";
-          a.href = facebookShareUrl;
+          //const a = document.createElement("a");
+          //document.body.appendChild(a);
+          //a.style.display = "none";
+          //a.href = facebookShareUrl;
           //a.target = "_blank";
-          a.click();
-          document.body.removeChild(a);
+          //a.click();
+          //document.body.removeChild(a);
+
+          navigate(`/slogan/${imageName}`);
 
           setImageIsSaving(false);
         }
@@ -193,15 +200,9 @@ function App() {
         />
       }
 
-
       <div className="bottom-buttons">
         {hasImage &&
-          <button className="secondary" onClick={handleGenerateBillboard}>
-              <span className="icon refresh-icon">
-                <RefreshIcon />
-              </span>
-            Vygeneruj nový billboard
-          </button>
+          <GenerateButton onClick={handleGenerateBillboard} />
         }
 
         {ALLOW_PHOTO_UPLOAD &&
@@ -236,12 +237,7 @@ function App() {
         }
 
         {hasImage && ALLOW_SHARE &&
-          <button id="share-fb-button" className="primary" onClick={handleFacebookShare}>
-            <span className="icon">
-              <FacebookIcon />
-            </span>
-            {imageIsSaving ? 'Pracujem...' : 'Zdieľať billboard na Facebooku'}
-          </button>
+          <ShareButton isSaving={imageIsSaving} onClick={handleFacebookShare} />
         }
       </div>
 
@@ -252,7 +248,7 @@ function App() {
             <strong>Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.</strong>
           </p>
 
-          <p className="privacy-policy">
+          <p className="privacy-policy-link-container">
             <Link to="/zasady-ochrany-osobnych-udajov">
               Zásady ochrany osobných údajov
             </Link>

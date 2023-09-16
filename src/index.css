@@ -73,12 +73,24 @@ button.outline-danger, .button.outline-danger {
   color: #ca3342;
 }
 
-
-
 .icon svg {
   width: 1em;
   height: 1em;
   vertical-align: middle;
+}
+
+.bottom-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.bottom-buttons button,
+.bottom-buttons .button {
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -101,5 +113,16 @@ button.outline-danger, .button.outline-danger {
 
   h1 {
     font-size: 2em;
+  }
+
+  .bottom-buttons {
+    flex-direction: column;
+  }
+
+  .bottom-buttons button,
+  .bottom-buttons .button {
+    /*width: 100%;*/
+    margin-left: 0;
+    margin-right: 0;
   }
 }

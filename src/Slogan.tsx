@@ -1,15 +1,27 @@
+import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { Meta } from 'react-head';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import './Slogan.css';
-import { useState } from 'react';
+import ShareButton from './ShareButton.tsx';
+import GenerateButton from './GenerateButton.tsx';
+import { canShare } from './sharing.ts';
 
 const VITE_IMAGE_CDN_FOLDER = import.meta.env.VITE_IMAGE_CDN_FOLDER || 'prod';
 const BASE_URL = import.meta.env.VITE_IMAGE_CDN_URL;
 
 function Slogan() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { sloganId } = useParams();
   const [notFound, setNotFound] = useState(false);
+  const shareRef = useRef<HTMLAnchorElement | null>(null);
+
+  useEffect(() => {
+    if(sloganId && shareRef.current && location.search.includes('share=1')) {
+      location.search = '';
+      shareRef.current.click();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if(!sloganId) {
     navigate("/");
@@ -17,6 +29,22 @@ function Slogan() {
   }
 
   const imageUrl = `${BASE_URL}/${VITE_IMAGE_CDN_FOLDER}/${sloganId}.jpg`;
+  const urlToShare = new URL(`/slogan/${sloganId}`, window.location.origin);
+  const encodedUrlToShare = encodeURIComponent(urlToShare.toString());
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
+
+  const handleShareClick = (e: MouseEvent) => {
+    const shareData = {
+      title: "Prázdne heslá",
+      text: "Náhodný generátor prázdnych politických hesiel",
+      url: encodedUrlToShare,
+    }
+
+    if(canShare(shareData)) {
+      e.preventDefault();
+      navigator.share(shareData);
+    }
+  };
 
   return (
     <div id="root">
@@ -30,11 +58,23 @@ function Slogan() {
         <img id="slogan-image" alt="Náhodne vygenerovaný politický slogan" src={imageUrl} onError={() => setNotFound(true)} />
       }
 
-      <p>
-        <Link className="button primary" to="/">
-          Vygenerujte si vlastný slogan
-        </Link>
-      </p>
+      <div className="bottom-buttons">
+        <GenerateButton
+          link
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          to="/"
+        />
+
+        <ShareButton
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          ref={shareRef}
+          link
+          href={facebookShareUrl}
+          onClick={handleShareClick}
+        />
+      </div>
     </div>
   )
 }

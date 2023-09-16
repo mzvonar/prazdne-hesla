@@ -1,0 +1,9 @@
+.privacy-policy p {
+    margin-bottom: 4em;
+}
+
+@media screen and (max-width: 768px) {
+    .privacy-policy p {
+        margin-bottom: 2em;
+    }
+}

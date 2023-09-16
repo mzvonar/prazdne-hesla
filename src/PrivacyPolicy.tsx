@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import './PrivacyPolicy.css';
 
 const ALLOW_PHOTO_UPLOAD = import.meta.env.VITE_ALLOW_PHOTO_UPLOAD === 'true';
 
@@ -9,7 +10,7 @@ function PrivacyPolicy() {
   }, []);
 
   return (
-    <div>
+    <div className="privacy-policy">
       <h1>
         <Link to="/" style={{ fontSize: '0.6em', marginRight: '20px' }}>&lt; späť</Link>
         Prázdne heslá

@@ -137,7 +137,7 @@ function App() {
           //a.click();
           //document.body.removeChild(a);
 
-          navigate(`/slogan/${imageName}?share=1`);
+          navigate(`/slogan/${imageName}`, { state: { share: true } });
 
           setImageIsSaving(false);
         }

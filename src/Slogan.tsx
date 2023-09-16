@@ -17,8 +17,8 @@ function Slogan() {
   const shareRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
-    if(sloganId && shareRef.current && location.search.includes('share=1')) {
-      location.search = '';
+    if(sloganId && shareRef.current && location.state?.share) {
+      navigate(location.pathname, { replace: true });
       shareRef.current.click();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

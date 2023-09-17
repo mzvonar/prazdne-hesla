@@ -8,7 +8,8 @@ import { HeadProvider } from 'react-head';
 import App from './App.tsx'
 import Slogan from './Slogan.tsx';
 import PrivacyPolicy from './PrivacyPolicy.tsx';
-import './index.css'
+import './index.css';
+import './theme.css';
 
 const router = createBrowserRouter([
   {

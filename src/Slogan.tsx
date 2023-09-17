@@ -47,10 +47,10 @@ function Slogan() {
   };
 
   return (
-    <div id="root">
+    <div>
       <Meta property="og:image" content={imageUrl} />
 
-      <h1>Prázdne heslá</h1>
+      <h1 className="main-header">Prázdne heslá</h1>
 
       {notFound ?
         <img id="slogan-image" alt="Slogan sa nenašiel" src="/not_found.jpg" />

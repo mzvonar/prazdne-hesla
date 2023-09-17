@@ -12,7 +12,7 @@ function PrivacyPolicy() {
   return (
     <div className="privacy-policy">
       <h1>
-        <Link to="/" style={{ fontSize: '0.6em', marginRight: '20px' }}>&lt; späť</Link>
+        <Link to="/" className="back-button">&lt; späť</Link>
         Prázdne heslá
       </h1>
 

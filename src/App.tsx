@@ -179,7 +179,7 @@ function App() {
     <div className="App">
       <ToastContainer />
 
-      <h1>
+      <h1 className="main-header">
         {!hasImage ? 'Vygenerujte si prázdne heslá' : 'Prázdne heslá'}
       </h1>
 
@@ -248,10 +248,15 @@ function App() {
 
       {hasImage &&
         <>
-          <p>
-            <strong>Voľte s rozumom!</strong> Je celkom ľahké náhodne vygenerovať prázdny politický slogan. Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />
-            <strong>Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.</strong>
-          </p>
+          <div className="main-text">
+            <p>
+              <strong>Voľte s rozumom!</strong> Je celkom ľahké náhodne vygenerovať prázdny politický slogan. Niektoré dokonca dávajú väčší zmysel ako výroky skutočných politikov.<br />
+
+            </p>
+            <p>
+              <strong>Rozmýšlajte nad tým čo vám politici sľubujú predtým ako im hodíte hlas.</strong>
+            </p>
+          </div>
 
           <p className="privacy-policy-link-container">
             <Link to="/zasady-ochrany-osobnych-udajov">

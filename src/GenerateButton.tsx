@@ -12,7 +12,7 @@ const GenerateButton: React.FC<Props> = ({ link, ...props }) => {
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    <Component className="button secondary" {...props}>
+    <Component className="button primary" {...props}>
       <span className="icon refresh-icon">
         <RefreshIcon/>
       </span>

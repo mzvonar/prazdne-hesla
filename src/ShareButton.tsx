@@ -24,7 +24,7 @@ const ShareButton: React.FC<Props> = React.forwardRef<HTMLButtonElement, Props>(
   return (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    <Component ref={ref} id="share-fb-button" className={`button primary${className || ''}`} {...props}>
+    <Component ref={ref} id="share-fb-button" className={`button secondary${className || ''}`} {...props}>
       {!_canShare &&
         <span className="icon">
           <FacebookIcon/>

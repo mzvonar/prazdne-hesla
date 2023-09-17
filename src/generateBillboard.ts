@@ -489,11 +489,11 @@ const renderVolte = (canvas: HTMLCanvasElement, palette: ColorPalette, fontName:
         color: '#fff',
         backgroundColor: palette.primary,
       },
-      {
-        text: 'X',
-        color: palette.primary,
-        backgroundColor: '#fff',
-      }
+      //{
+      //  text: 'X',
+      //  color: palette.primary,
+      //  backgroundColor: '#fff',
+      //}
     ]
   );
 }

@@ -189,15 +189,20 @@ function App() {
         </div>
       }
 
-      {hasImage && slogan && fontsLoaded &&
-        <Billboard
-          canvasRef={canvasRef}
-          slogan={slogan}
-          subheader="Generujem billboardy na prazdnehesla.sk"
-          width={MAX_WIDTH}
-          height={MAX_HEIGHT}
-          userImage={userImage}
-        />
+      {hasImage && slogan &&
+        fontsLoaded ?
+          <Billboard
+            canvasRef={canvasRef}
+            slogan={slogan}
+            subheader="Generujem billboardy na prazdnehesla.sk"
+            width={MAX_WIDTH}
+            height={MAX_HEIGHT}
+            userImage={userImage}
+          />
+        :
+          <div className="canvas-loading">
+            Rozmýšľam...
+          </div>
       }
 
       <div className="bottom-buttons">

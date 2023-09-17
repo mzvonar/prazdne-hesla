@@ -619,6 +619,38 @@ const istotaNoun: Noun = {
   },
 };
 
+const segedinNoun: Noun = {
+  word: "segedín",
+  type: "noun",
+  gender: "masculine",
+  model: 'dub',
+  cases: {
+    nominative: {
+      singular: "segedín",
+      plural: "segedíny",
+    },
+    genitive: {
+      singular: "segedína",
+      plural: "segedínov",
+    },
+    dative: {
+      singular: "segedínu",
+      plural: "segedínom",
+    },
+    accusative: {
+      singular: "segedín",
+      plural: "segedíny",
+    },
+    locative: {
+      singular: "segedíne",
+      plural: "segedínoch",
+    },
+    instrumental: {
+      singular: "segedínom",
+      plural: "segedínmi",
+    },
+  },
+};
 
 const nouns: Noun[] = [
   stromNoun,
@@ -645,6 +677,7 @@ const nouns: Noun[] = [
   bordelNoun,
   mierNoun,
   istotaNoun,
+  segedinNoun,
 ];
 
 export default nouns;

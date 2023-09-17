@@ -32,7 +32,7 @@ function Slogan() {
   const urlToShare = new URL(`/slogan/${sloganId}`, window.location.origin);
   const encodedUrlToShare = encodeURIComponent(urlToShare.toString());
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrlToShare}`;
-  console.log('encodedUrlToShare: ', encodedUrlToShare);
+
   const shareData = {
     title: "Prázdne heslá",
     text: "Náhodný generátor prázdnych politických hesiel",

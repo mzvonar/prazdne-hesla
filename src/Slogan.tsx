@@ -53,9 +53,9 @@ function Slogan() {
       <h1 className="main-header">Prázdne heslá</h1>
 
       {notFound ?
-        <img id="slogan-image" alt="Slogan sa nenašiel" src="/not_found.jpg" />
+        <img id="slogan-image" alt="Slogan sa nenašiel" src="/not_found.jpg" width="1000" />
         :
-        <img id="slogan-image" alt="Náhodne vygenerovaný politický slogan" src={imageUrl} onError={() => setNotFound(true)} />
+        <img id="slogan-image" alt="Náhodne vygenerovaný politický slogan" src={imageUrl} width="1000" onError={() => setNotFound(true)} />
       }
 
       <div className="bottom-buttons">
